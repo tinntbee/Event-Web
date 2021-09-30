@@ -1,0 +1,181 @@
+.Account-detail{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.Account-detail h4{
+    font-weight: 600;
+}
+
+.Account-detail .Sidebar{
+    background: var(--base-color-gray);
+    width: fit-content;
+    min-width: fit-content;
+    padding-right: 20px;
+}
+
+.Account-detail .Container{
+    width: 100%;
+    background: var(--white-color);
+    box-shadow: 0px 3px 6px var(--box-shadow-gray);
+    border-radius: 20px;
+}
+
+.Account-detail .Sidebar .Title{
+    margin-bottom: 10px;
+}
+
+.Account-detail .Sidebar ul li{
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+.Account-detail .Sidebar ul li h3{
+    padding: 6px 20px;
+    border-radius: 30px;
+    width: fit-content;
+}
+
+.Account-detail .Sidebar ul li.active h3{
+    background: var(--primary-color-blue);
+    color: var(--white-color);
+    font-weight: 600;
+}
+
+.Account-detail .Sidebar ul li h3:hover{
+    background: var(--primary-color-blue-20);
+}
+
+.Account-detail .Container{
+    padding: 35px 50px;
+}
+
+.Account-detail .Container__header{
+    margin-bottom: 10px;
+}
+
+.Account-detail .Container__header h3{
+    font-weight: 600;
+}
+
+.Account-detail .Container__body .Avatar__content div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.Account-detail h4{
+    margin-bottom: 5px;
+}
+
+.Account-detail .Container__body .Avatar__content .Avatar{
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.Account-detail .Container__body .Avatar__content button{
+    font-size: 16px;
+    font-weight: 400;
+    padding: 6px 0;
+    border-radius: 10px;
+    margin-right: 20px;
+    width: 90px;
+    text-align: center;
+}
+
+.Account-detail .Container__body .Avatar__content button.Upload{
+    background: var(--primary-color-blue);
+    color: var(--white-color);
+}
+
+.Account-detail .Container__body .Avatar__content button.Remove{
+    border: 1px solid var(--border-color-gray);
+    background: var(--white-color);
+}
+
+.Account-detail .Container__body .Avatar__content{
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border-color-gray);
+    margin-bottom: 10px;
+}
+
+.Account-detail .Container__body .Information__content{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--border-color-gray);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.Account-detail .Container__body .Information__input{
+    width: 300px;
+    margin-bottom: 10px;
+}
+
+.Account-detail .Container__body .Information__input.short{
+    width: 120px;
+}
+
+.Account-detail .Container__body .Information__input.short .Input-detail{
+    display: none;
+}
+
+.Account-detail .Container__body .Input-detail{
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 200;
+}
+
+.Account-detail .Container__body .Information__input div{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    text-align: center;
+    justify-content: space-between;
+}
+
+.Account-detail .Container__body .Information__input input{
+    border: 2px solid var(--border-color-gray);
+    padding: 6px 10px;
+    border-radius: 10px;
+    outline: none;
+    width: 100%;
+    transition: border 0.3s linear;
+    font-size: 16px;
+}
+
+.Account-detail .Container__body .Information__input input:disabled{
+    color: var(--text-disabled-color-gray);
+}
+
+.Account-detail .Container__body .Information__input input:focus{
+    border-color: var(--primary-color-blue);
+}
+
+.Account-detail .Container__body .Linked-account{
+    width: 100%;
+}
+
+.Account-detail .Container__body .Linked-contact{
+    margin: 10px 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+}
+
+.Account-detail .Container__body .Linked-contact .icon{
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+}
+
+.Account-detail .Container__body .Linked-contact button{
+    float: right;
+}
