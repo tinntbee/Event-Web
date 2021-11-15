@@ -18,6 +18,7 @@
 
 .Account-detail .Container{
     width: 100%;
+    height: fit-content;
     background: var(--white-color);
     box-shadow: 0px 3px 6px var(--box-shadow-gray);
     border-radius: 20px;
@@ -77,27 +78,7 @@
     margin-right: 20px;
 }
 
-.Account-detail .Container__body .Avatar__content button{
-    font-size: 16px;
-    font-weight: 400;
-    padding: 6px 0;
-    border-radius: 10px;
-    margin-right: 20px;
-    width: 90px;
-    text-align: center;
-}
-
-.Account-detail .Container__body .Avatar__content button.Upload{
-    background: var(--primary-color-blue);
-    color: var(--white-color);
-}
-
-.Account-detail .Container__body .Avatar__content button.Remove{
-    border: 1px solid var(--border-color-gray);
-    background: var(--white-color);
-}
-
-.Account-detail .Container__body .Avatar__content{
+.Account-detail .border-bottom{
     padding-bottom: 10px;
     border-bottom: 2px solid var(--border-color-gray);
     margin-bottom: 10px;
@@ -108,13 +89,10 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
-    border-bottom: 2px solid var(--border-color-gray);
-    padding-bottom: 10px;
-    margin-bottom: 10px;
 }
 
 .Account-detail .Container__body .Information__input{
-    width: 300px;
+    width: 400px;
     margin-bottom: 10px;
 }
 
@@ -127,7 +105,7 @@
 }
 
 .Account-detail .Container__body .Input-detail{
-    font-size: 14px;
+    font-size: 0.8rem;
     font-style: italic;
     font-weight: 200;
 }
@@ -147,7 +125,7 @@
     outline: none;
     width: 100%;
     transition: border 0.3s linear;
-    font-size: 16px;
+    font-size: 1rem;
 }
 
 .Account-detail .Container__body .Information__input input:disabled{
@@ -163,19 +141,33 @@
 }
 
 .Account-detail .Container__body .Linked-contact{
-    margin: 10px 0;
+    margin-top: 10px;
     width: 100%;
     display: flex;
     flex-direction: row;
     text-align: center;
+    justify-content: space-between;
 }
 
 .Account-detail .Container__body .Linked-contact .icon{
     width: 40px;
     height: 40px;
     border-radius: 10px;
+    margin-right: 20px;
 }
 
-.Account-detail .Container__body .Linked-contact button{
-    float: right;
+.Account-detail .Container__body .Linked-contact div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.Account-detail .Container__footer{
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.Account-detail .Container__footer button{
+    margin-right: 0;
 }

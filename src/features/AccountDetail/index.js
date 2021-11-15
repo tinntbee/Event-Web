@@ -1,10 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./style.css";
+import * as Yup from "Yup";
+import { Form, Formik } from "formik";
 
 AccountDetail.propTypes = {};
 
 function AccountDetail(props) {
+  const INITIAL_FORM_STATE = {};
+
+  const FORM_VALIDATION = Yup.object().shape({});
+
   return (
     <div className="Account-detail">
       <div className="Sidebar">
@@ -26,7 +32,19 @@ function AccountDetail(props) {
           <h3 className="Title">Account Information</h3>
         </div>
         <div className="Container__body">
-          <div className="Avatar__content">
+          <Formik
+            initialValues={{ ...INITIAL_FORM_STATE }}
+            validationSchema={FORM_VALIDATION}
+            onSubmit={(value) => {
+              console.log(value);
+            }}
+          >
+            <Form>
+              
+            </Form>
+          </Formik>
+
+          <div className="Avatar__content border-bottom">
             <h4>Avatar</h4>
             <div>
               <img
@@ -34,11 +52,11 @@ function AccountDetail(props) {
                 className="Avatar"
                 src="https://scontent.fvca1-4.fna.fbcdn.net/v/t1.6435-9/133922219_2916809551977269_4941951420019022316_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=174925&_nc_ohc=nJ4fpqi-zCUAX9E385Q&_nc_ht=scontent.fvca1-4.fna&oh=271e2e49408e50373a2a751e03ea70ac&oe=617A1F1C"
               />
-              <button className="Upload">Upload</button>
-              <button className="Remove">Remove</button>
+              <button className="Upload btn-default-primary">Upload</button>
+              <button className="Remove btn-outline-primary">Choose</button>
             </div>
           </div>
-          <div className="Information__content">
+          <div className="Information__content border-bottom">
             <div className="Information__input Nickname">
               <div>
                 <h4>Nickname</h4>
@@ -50,9 +68,13 @@ function AccountDetail(props) {
             <div className="Information__input Nickname">
               <div>
                 <h4>Full name</h4>
-                <p className="Input-detail">Real Full name of you</p>
+                <p className="Input-detail">Your Real Full name</p>
               </div>
-              <input type="text" value="Nguyễn Trung Tín" disabled="true"></input>
+              <input
+                type="text"
+                value="Nguyễn Trung Tín"
+                disabled="true"
+              ></input>
             </div>
 
             <div className="Information__input Nickname short">
@@ -66,7 +88,7 @@ function AccountDetail(props) {
             <div className="Information__input Nickname">
               <div>
                 <h4>University</h4>
-                <p className="Input-detail">University of you</p>
+                <p className="Input-detail">Your University</p>
               </div>
               <input type="text" value="HCMUTE"></input>
             </div>
@@ -74,7 +96,7 @@ function AccountDetail(props) {
             <div className="Information__input Nickname">
               <div>
                 <h4>Faculty</h4>
-                <p className="Input-detail">Faculty of you</p>
+                <p className="Input-detail">Your Faculty</p>
               </div>
               <input type="text" value="Information Technology"></input>
             </div>
@@ -90,9 +112,13 @@ function AccountDetail(props) {
             <div className="Information__input Nickname">
               <div>
                 <h4>Email</h4>
-                <p className="Input-detail">Visible with other player</p>
+                <p className="Input-detail">Visible with host</p>
               </div>
-              <input type="text" value="18110381@student.hcmute.edu.vn" disabled="true"></input>
+              <input
+                type="text"
+                value="18110381@student.hcmute.edu.vn"
+                disabled="true"
+              ></input>
             </div>
 
             <div className="Information__input Nickname">
@@ -105,17 +131,38 @@ function AccountDetail(props) {
 
             <div className="Information__input Nickname short"></div>
           </div>
-          <div className="Linked__account">
+          <div className="Linked__account border-bottom">
             <h4>Linked Account</h4>
             <p className="Input-detail">Contact you other way</p>
             <div className="Linked-contact Facebook-contact">
-              <img className="icon" alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Facebook-icon-1.png/480px-Facebook-icon-1.png"/>
-              <p>Sign in with Facebook</p>
-              <button>Connect</button>
+              <div>
+                <img
+                  className="icon"
+                  alt=""
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Facebook-icon-1.png/480px-Facebook-icon-1.png"
+                />
+                <p>Sign in with Facebook</p>
+              </div>
+              <button className="btn-outline-primary">Connect</button>
+            </div>
+            <div className="Linked-contact Facebook-contact">
+              <div>
+                <img
+                  className="icon"
+                  alt=""
+                  src="https://vnaid.vnanet.vn/Images/google.png"
+                />
+                <p>
+                  Signed in with <b>18110381@student.hcmute.edu.vn</b>
+                </p>
+              </div>
+              <button disabled="true">Disconnect</button>
             </div>
           </div>
         </div>
-        <div className="Container__footer"></div>
+        <div className="Container__footer">
+          <button className="btn-default-primary">Save change</button>
+        </div>
       </div>
     </div>
   );
