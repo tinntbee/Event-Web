@@ -1,8 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { TextField } from "@material-ui/core";
 
-InputField.propTypes = {
+DateField.propTypes = {
   field: PropTypes.object.isRequired,
   form: PropTypes.object.isRequired,
 
@@ -12,27 +11,25 @@ InputField.propTypes = {
   disabled: PropTypes.bool,
 };
 
-InputField.defaultProp = {
+DateField.defaultProp = {
   type: "text",
   label: "",
   placeholder: "",
   disabled: false,
 };
-
-
-function InputField(props) {
-  const {field, form, type, label, disabled, placeholder } = props;
-  const {name} = field;
-  const {errors, touched} = form;
+function DateField(props) {
+  const { field, form, type, label, disabled, placeholder } = props;
+  const { name } = field;
+  const { errors, touched } = form;
   const error = touched[name] && errors[name];
   return (
-    <TextField
+    <DateField
+      disableToolbar
       variant="outlined"
       size="small"
       fullWidth
       id={name}
       {...field}
-
       label={label}
       type={type}
       disabled={disabled}
@@ -40,8 +37,11 @@ function InputField(props) {
       form={form}
       error={error}
       helperText={error}
+      KeyboardButtonProps={{
+        "aria-label": "change date",
+      }}
     />
   );
 }
 
-export default InputField;
+export default DateField;
