@@ -11,8 +11,8 @@
 
 .Account-detail .Sidebar{
     background: var(--base-color-gray);
-    width: fit-content;
-    min-width: fit-content;
+    width: 250px;
+    min-width: 200px;
     padding-right: 20px;
 }
 
@@ -30,23 +30,24 @@
 
 .Account-detail .Sidebar ul li{
     cursor: pointer;
-    margin-bottom: 5px;
 }
 
-.Account-detail .Sidebar ul li h3{
-    padding: 6px 20px;
+.Account-detail .Sidebar ul li button{
+    padding: 10px 15px;
     border-radius: 30px;
     width: fit-content;
+    color: "#FFF";
+    margin: 0;
 }
 
-.Account-detail .Sidebar ul li.active h3{
+.Account-detail .Sidebar ul li.active button{
     background: var(--primary-color-blue);
     color: var(--white-color);
     font-weight: 600;
 }
 
-.Account-detail .Sidebar ul li h3:hover{
-    background: var(--primary-color-blue-20);
+.Account-detail .Sidebar ul li button:hover{
+    filter: brightness(90%);
 }
 
 .Account-detail .Container{

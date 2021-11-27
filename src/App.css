@@ -1,16 +1,15 @@
-*{
+* {
   box-sizing: border-box;
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-
-button{
+button {
   display: inline-block;
   text-align: center;
   border: 0;
-  width:  auto;
+  width: auto;
   cursor: pointer;
   outline: none;
 }
@@ -22,25 +21,34 @@ button{
   flex-direction: column;
 }
 
-:root{
-  --base-color-gray: #F3F3F3;
-  --primary-color-blue: #348B9C;
+:root {
+  --base-color-gray: #f3f3f3;
+  --primary-color-blue: #348b9c;
   --primary-color-blue-20: rgb(52 139 156 / 0.2);
   --white-color: #fff;
   --box-shadow-gray: rgb(57 71 106 / 0.16);
-  --border-color-gray: #ECECEC;
-  --text-disabled-color-gray: #B9B9B9;
+  --border-color-gray: #831212;
+  --text-disabled-color-gray: #b9b9b9;
+  --text-system-color-gray: #7e7e7e;
+  --error-color: #ff5700;
+  --base-color-gray-2: #EBEBEB;
 }
 
-.Header{
+.Header {
   width: 100%;
   height: 60px;
   background: var(--primary-color-blue);
 }
 
-.Body{
+.Body {
   width: 100%;
   height: 100%;
   padding: 10px 300px;
   background: var(--base-color-gray);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+a {
+  text-decoration: none;
 }

@@ -5,7 +5,8 @@ import * as yup from "yup";
 import { storage } from "../../services/firebase";
 import InputField from "./Components/InputField";
 import SelectField from "./Components/SelectField";
-import "./style.css";
+import "./style.scss";
+import { Link } from "react-router-dom";
 
 AccountDetail.propTypes = {};
 
@@ -170,15 +171,22 @@ function AccountDetail(props) {
       <div className="Sidebar">
         <h2 className="Title">My Account</h2>
         <ul>
-          <li className="active">
-            <h3>Account Information</h3>
-          </li>
-          <li>
-            <h3>Registered Events</h3>
-          </li>
-          <li>
-            <h3>Host</h3>
-          </li>
+          <Link to="/account-detail/information">
+            <li className="active">
+              <button>Account Information</button>
+            </li>
+          </Link>
+
+          <Link to="/account-detail/registered-event">
+            <li>
+              <button>Registered Events</button>
+            </li>
+          </Link>
+          <Link to="/account-detail/host">
+            <li>
+              <button>Host</button>
+            </li>
+          </Link>
         </ul>
       </div>
       <div className="Container">

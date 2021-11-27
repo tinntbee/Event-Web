@@ -1,0 +1,46 @@
+.group-file-input {
+  & > .group-name {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--primary-color-blue);
+    margin-bottom: 5px;
+  }
+
+  & > .input-file {
+    width: 287px;
+    border-radius: 10px;
+    border: 1px solid var(--primary-color-blue);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+
+    & > .file-name {
+      font-size: 16px;
+    }
+
+    & > div {
+      width: 70px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary-color-blue);
+      border-radius: 10px;
+      color: var(--white-color);
+      font-size: 16px;
+      font-weight: 500;
+      position: relative;
+
+      & > input {
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+  }
+}
