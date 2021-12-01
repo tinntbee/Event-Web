@@ -27,7 +27,7 @@ button {
   --primary-color-blue-20: rgb(52 139 156 / 0.2);
   --white-color: #fff;
   --box-shadow-gray: rgb(57 71 106 / 0.16);
-  --border-color-gray: #831212;
+  --border-color-gray: #f3f3f3;
   --text-disabled-color-gray: #b9b9b9;
   --text-system-color-gray: #7e7e7e;
   --error-color: #ff5700;
@@ -43,10 +43,13 @@ button {
 .Body {
   width: 100%;
   height: 100%;
-  padding: 10px 300px;
+  padding: 10px 0;
   background: var(--base-color-gray);
   overflow-x: hidden;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 a {

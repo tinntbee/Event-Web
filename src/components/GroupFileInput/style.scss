@@ -18,6 +18,8 @@
 
     & > .file-name {
       font-size: 16px;
+      max-width: 190px;
+      overflow: hidden;
     }
 
     & > div {
