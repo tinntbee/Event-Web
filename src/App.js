@@ -1,14 +1,16 @@
-import logo from "./logo.svg";
 import { Redirect, Route, Switch } from "react-router-dom";
 import "./App.css";
 import AccountDetail from "./features/AccountDetail";
 import GameStudio from "./features/GameStudio";
-import LoginFeature from "./features/Login";
 import RegisteredEvent from "./features/AccountDetail/registerEvent";
 import Home from "./features/Home";
 import EventStudio from "./features/EventStudio";
 import EventFeature from "./features/EventFeature";
 import MiniGameFeature from "./features/MiniGameFeature";
+import LoginFeature from './features/Login';
+import LoginInfoFeature from './features/logininfo';
+import EventListFeature from './features/eventlist';
+import MemberListFeature from './features/memberlist';
 
 function App() {
   return (
@@ -38,6 +40,11 @@ function App() {
           <Route path="/home" component={Home} />
           <Route path="/event/:_id" component={EventFeature} exact/>
           <Route path="/mini-game/:_id" component={MiniGameFeature} exact/>
+          <Route path='/login' component={LoginFeature} exact/>
+          <Route path='/logininfo' component={LoginInfoFeature} exact/>
+          <Route path='/eventlist' component={EventListFeature} exact/>
+          <Route path='/memberlist' component={MemberListFeature} exact/>
+          <Route path='/minigamelist' component={MiniGameFeature} exact/>
         </Switch>
       </div>
     </div>
