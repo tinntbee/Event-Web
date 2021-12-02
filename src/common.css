@@ -35045,8 +35045,8 @@ a.u-link.u-text-hover-grey-90:hover {
         font-weight: 400;
         font-size: 3rem;
         line-height: 1.1;
-        margin-top: 20px;
-        margin-bottom: 20px;
+        /* margin-top: 20px;
+        margin-bottom: 20px; */
         }
         h2:not(.u-subtitle)
         {
@@ -35056,7 +35056,7 @@ a.u-link.u-text-hover-grey-90:hover {
         margin-top: 20px;
         margin-bottom: 20px;
         }
-        h3
+        h3.custom
         {
         font-weight: 400;
         font-size: 1.875rem;
@@ -35102,8 +35102,8 @@ a.u-link.u-text-hover-grey-90:hover {
         }
         p:not(.u-text-variant)
         {
-        margin-top: 20px;
-        margin-bottom: 20px;
+        /* margin-top: 20px;
+        margin-bottom: 20px; */
         }
         .u-btn
         {
