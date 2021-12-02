@@ -1,0 +1,87 @@
+.answers {
+  height: fit-content;
+  width: fit-content;
+  margin-left: 60px;
+  margin-right: 20px;
+
+  & > .answer-row {
+    & > .button-answer {
+      height: 42px;
+      width: 42px;
+      margin: 5px;
+      position: relative;
+      border-radius: 10px;
+      background: var(--white-color);
+      box-shadow: 0px 3px 6px var(--text-disabled-color-gray);
+      transition: all 0.2s linear;
+      display: inline-block;
+      border-width: 2px;
+      border-style: solid;
+      border-color: var(--white-color);
+
+      &:focus-within::before {
+        background-size: 100% 100%;
+      }
+
+      &.disabled {
+        opacity: 0;
+      }
+
+      &::before {
+        display: block;
+        position: absolute;
+        content: "";
+        height: 2px;
+        width: 20px;
+        background: var(--primary-color-blue-50);
+        background-image: linear-gradient(
+          var(--primary-color-blue),
+          var(--primary-color-blue)
+        );
+        background-size: 0% 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        bottom: 5px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+        transition: all 0.1s linear;
+      }
+
+      &.isFocus {
+        border-color: var(--primary-color-blue);
+      }
+
+      & > input {
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+        text-align: center;
+        border: none;
+        outline: none;
+        text-transform: uppercase;
+        position: relative;
+        z-index: 1;
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--primary-color-blue);
+        cursor: pointer;
+      }
+
+      &.key {
+        background: var(--primary-color-blue);
+        border-color: var(--primary-color-blue);
+        & > input {
+          color: var(--white-color);
+          background: var(--primary-color-blue);
+        }
+        &::before {
+          background-image: linear-gradient(
+            var(--white-color),
+            var(--white-color)
+          );
+        }
+      }
+    }
+  }
+}

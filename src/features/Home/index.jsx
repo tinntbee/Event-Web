@@ -281,6 +281,22 @@ function Home(props) {
       ],
     },
   ];
+  const fetchData = async () => {
+    fetch("http://localhost:2000/event", {
+      method: "GET", // or 'PUT'
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+  fetchData();
   return (
     <div className="home">
       <div className="home__header">

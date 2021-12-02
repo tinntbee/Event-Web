@@ -31,7 +31,8 @@ button {
   --text-disabled-color-gray: #b9b9b9;
   --text-system-color-gray: #7e7e7e;
   --error-color: #ff5700;
-  --base-color-gray-2: #EBEBEB;
+  --base-color-gray-2: #ebebeb;
+  --primary-color-blue-50: #d8e9ec;
 }
 
 .Header {
@@ -54,4 +55,17 @@ button {
 
 a {
   text-decoration: none;
+}
+
+button.btn-outline {
+  color: var(--primary-color-blue);
+  padding: 8px 15px;
+  font-weight: 500;
+}
+
+button.btn-contained {
+  background: var(--primary-color-blue);
+  padding: 8px 15px;
+  color: var(--white-color);
+  font-weight: 500;
 }

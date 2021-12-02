@@ -75,7 +75,7 @@ function ButtonAnswer(props) {
     >
       <Answer
         type="text"
-        autocomplete="off"
+        autoComplete="off"
         onChange={handleOnChange}
         value={currentQA.answers[columnNumber]}
         disabled={isDisabled}

@@ -7,6 +7,8 @@ import LoginFeature from "./features/Login";
 import RegisteredEvent from "./features/AccountDetail/registerEvent";
 import Home from "./features/Home";
 import EventStudio from "./features/EventStudio";
+import EventFeature from "./features/EventFeature";
+import MiniGameFeature from "./features/MiniGameFeature";
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
           <Route path="/event-studio" component={EventStudio} exact />
           <Route path="/login" component={LoginFeature} />
           <Route path="/home" component={Home} />
+          <Route path="/event/:_id" component={EventFeature} exact/>
+          <Route path="/mini-game/:_id" component={MiniGameFeature} exact/>
         </Switch>
       </div>
     </div>
