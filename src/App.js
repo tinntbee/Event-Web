@@ -2,15 +2,14 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import "./App.css";
 import AccountDetail from "./features/AccountDetail";
 import GameStudio from "./features/GameStudio";
-import LoginFeature from "./features/Login";
 import RegisteredEvent from "./features/AccountDetail/registerEvent";
 import Home from "./features/Home";
 import EventStudio from "./features/EventStudio";
-import LoginFeature from './features/login';
-import LoginInfoFeature from './features/logininfo';
-import EventListFeature from './features/eventlist';
-import MemberListFeature from './features/memberlist';
-import MiniGameFeature from './features/minigamelist';
+import LoginFeature from './features/Login';
+import LoginInfoFeature from './features/LoginInfo';
+import EventListFeature from './features/EventList';
+import MemberListFeature from './features/MemberList';
+import MiniGameFeature from './features/MiniGameList';
 
 function App() {
   return (
@@ -36,7 +35,6 @@ function App() {
           />
           <Route path="/game-studio" component={GameStudio} exact />
           <Route path="/event-studio" component={EventStudio} exact />
-          <Route path="/login" component={LoginFeature} />
           <Route path="/home" component={Home} />
           <Route path='/login' component={LoginFeature} exact/>
           <Route path='/logininfo' component={LoginInfoFeature} exact/>
