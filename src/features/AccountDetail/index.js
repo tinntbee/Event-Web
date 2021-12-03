@@ -7,6 +7,8 @@ import InputField from "./Components/InputField";
 import SelectField from "./Components/SelectField";
 import "./style.scss";
 import { Link } from "react-router-dom";
+import { userAPI } from "../../api/userAPI";
+import { SnackbarProvider, useSnackbar } from 'notistack';
 
 AccountDetail.propTypes = {};
 
@@ -42,24 +44,25 @@ function AccountDetail(props) {
   const classes = useStyles();
   const yesterday = new Date(Date.now() - 86400000);
   const [state, setState] = useState({
-    avatarUrl:
+    avatar:
       "https://firebasestorage.googleapis.com/v0/b/myevents-finalproject.appspot.com/o/images%2F25780c863cb1c8ef91a0.jpg?alt=media&token=51c300f4-f947-41d3-96d5-440ef2303fd0",
     avatarFile: null,
+    account: {
+      nickname: "",
+      fullName: "",
+      gender: "",
+      university: "",
+      faculty: "",
+      studentClass: "",
+      email: "",
+      phone: "",
+      dob: "",
+      avatar: "",
+    },
   });
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
-  const INITIAL_FORM_STATE = {
-    nickname: "beenek",
-    fullName: "Nguyễn Trung Tín",
-    sex: "male",
-    university: "HCMUTE",
-    faculty: "FIT",
-    class: "181103B",
-    email: "trungtin27132000@gmail.com",
-    phone: "0945918317",
-    birthDay: "2021-11-10",
-    avatarUrl: "",
-  };
+  const INITIAL_FORM_STATE = { ...state.account };
   const FORM_VALIDATION = yup.object().shape({
     nickname: yup
       .string("Enter your nickname")
@@ -68,12 +71,12 @@ function AccountDetail(props) {
     fullName: yup
       .string("Enter your full name")
       .required("Full Name is required"),
-    sex: yup.string("Enter your full name").required("Password is required"),
+    gender: yup.string("Enter your full name").required("Password is required"),
     university: yup
       .string("Your university")
       .required("University is required"),
     faculty: yup.string("Your faculty").required("Faculty is required"),
-    class: yup.string("Your class").required("Class is required"),
+    studentClass: yup.string("Your class").required("Class is required"),
     email: yup.string("Enter your email").email().required(),
     phone: yup
       .string("Enter your phone number")
@@ -81,13 +84,10 @@ function AccountDetail(props) {
       .trim()
       .length(10, "Please enter your phone type 10 number")
       .required(),
-    birthDay: yup
-      .date()
-      .max(yesterday, "please enter your day of birth")
-      .required(),
-    avatarUrl: yup.string(),
+    dob: yup.date().max(yesterday, "please enter your day of birth").required(),
+    avatar: yup.string(),
   });
-  const sexOptions = [
+  const genderOptions = [
     { value: "male", label: "Male" },
     { value: "female", label: "Female" },
   ];
@@ -116,11 +116,36 @@ function AccountDetail(props) {
     },
   ];
 
+  const fetchUserInfo = async () => {
+    const data = await userAPI.getAccountInfo();
+    if (data) {
+      console.log(data);
+      setState({
+        ...state,
+        avatar: data.avatar,
+        account: {
+          nickname: data.nickname,
+          fullName: data.fullName,
+          gender: data.gender,
+          university: data.university,
+          faculty: data.faculty,
+          studentClass: data.studentClass,
+          email: data.email,
+          phone: data.phone,
+          dob: data.dob.substring(0, 10),
+          avatar: data.avatar,
+        },
+      });
+    }
+  };
+
   const formik = useFormik({
-    initialValues: INITIAL_FORM_STATE,
+    initialValues: state.account,
     validationSchema: FORM_VALIDATION,
+    enableReinitialize: true,
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
+      const data = userAPI.updateAccountInfo(values);
     },
   });
 
@@ -131,6 +156,8 @@ function AccountDetail(props) {
         ...state,
         avatarFile: e.target.files[0],
       });
+
+      formik.values.avatar = state.avatar;
     }
   };
 
@@ -154,7 +181,7 @@ function AccountDetail(props) {
               setState({
                 ...state,
                 avatarFile: null,
-                avatarUrl: url.toString(),
+                avatar: url.toString(),
               });
             });
         }
@@ -162,9 +189,15 @@ function AccountDetail(props) {
     }
   };
 
+  const { enqueueSnackbar } = useSnackbar();
+  const handleClickVariant = (variant) => () => {
+    // variant could be success, error, warning, info, or default
+    enqueueSnackbar('This is a success message!', { variant });
+  };
+
   useEffect(() => {
-    formik.values.avatarUrl = state.avatarUrl;
-  }, [state]);
+    fetchUserInfo();
+  }, []);
 
   return (
     <div className="Account-detail">
@@ -199,7 +232,7 @@ function AccountDetail(props) {
               <div className="Avatar__content border-bottom">
                 <h4>Avatar</h4>
                 <div>
-                  <img alt="" className="Avatar" src={state.avatarUrl} />
+                  <img alt="" className="Avatar" src={state.avatar} />
                   <label htmlFor="upload-photo">
                     <input
                       style={{ display: "none" }}
@@ -249,9 +282,9 @@ function AccountDetail(props) {
                   <Grid item xs={2} className={classes.field}>
                     <FastField
                       component={SelectField}
-                      name="sex"
-                      label="Sex"
-                      options={sexOptions}
+                      name="gender"
+                      label="gender"
+                      options={genderOptions}
                     />
                   </Grid>
                   <Grid item xs={5} className={classes.field}>
@@ -273,7 +306,7 @@ function AccountDetail(props) {
                   <Grid item xs={2} className={classes.field}>
                     <FastField
                       component={SelectField}
-                      name="class"
+                      name="studentClass"
                       label="Class"
                       options={
                         universityOptions[0].facultyOptions[0].classOption
@@ -299,8 +332,8 @@ function AccountDetail(props) {
                   <Grid item xs={3} className={classes.field}>
                     <FastField
                       component={InputField}
-                      name="birthDay"
-                      label="Birthday"
+                      name="dob"
+                      label="dob"
                       type="date"
                     />
                   </Grid>

@@ -1,0 +1,16 @@
+import * as type from "../types";
+
+export const userAction = {
+  Login: (payload) => {
+    return {
+      type: type.LOGIN,
+      payload: payload,
+    };
+  },
+  Logout: (payload) => {
+    return {
+      type: type.LOGOUT,
+      payload: payload,
+    };
+  },
+};

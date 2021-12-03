@@ -1,13 +1,15 @@
 import React from "react";
-import PropTypes from "prop-types";
-import "./style.scss";
+import { useHistory } from "react-router-dom";
 import EventBox from "../../components/EventBox";
+import "./style.scss";
 
 Home.propTypes = {};
 
 function Home(props) {
+  const history = useHistory();
   const data = [
     {
+      _id: "1",
       thumbnail:
         "https://scontent.fvca1-4.fna.fbcdn.net/v/t39.30808-6/257464339_3109708449259622_2410193694200403801_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=0debeb&_nc_ohc=eU6XRTsS6ecAX8mPoDI&tn=j7LpXkDUmE8O4tks&_nc_ht=scontent.fvca1-4.fna&oh=bc9b4ed2f863930914848c489f5cac9e&oe=61A2BB31",
       avatarHost:
@@ -47,6 +49,7 @@ function Home(props) {
       ],
     },
     {
+      _id: "1",
       thumbnail:
         "https://scontent.fvca1-4.fna.fbcdn.net/v/t39.30808-6/257464339_3109708449259622_2410193694200403801_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=0debeb&_nc_ohc=eU6XRTsS6ecAX8mPoDI&tn=j7LpXkDUmE8O4tks&_nc_ht=scontent.fvca1-4.fna&oh=bc9b4ed2f863930914848c489f5cac9e&oe=61A2BB31",
       avatarHost:
@@ -86,6 +89,7 @@ function Home(props) {
       ],
     },
     {
+      _id: "1",
       thumbnail:
         "https://scontent.fvca1-4.fna.fbcdn.net/v/t39.30808-6/257464339_3109708449259622_2410193694200403801_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=0debeb&_nc_ohc=eU6XRTsS6ecAX8mPoDI&tn=j7LpXkDUmE8O4tks&_nc_ht=scontent.fvca1-4.fna&oh=bc9b4ed2f863930914848c489f5cac9e&oe=61A2BB31",
       avatarHost:
@@ -125,6 +129,7 @@ function Home(props) {
       ],
     },
     {
+      _id: "1",
       thumbnail:
         "https://scontent.fvca1-4.fna.fbcdn.net/v/t39.30808-6/257464339_3109708449259622_2410193694200403801_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=0debeb&_nc_ohc=eU6XRTsS6ecAX8mPoDI&tn=j7LpXkDUmE8O4tks&_nc_ht=scontent.fvca1-4.fna&oh=bc9b4ed2f863930914848c489f5cac9e&oe=61A2BB31",
       avatarHost:
@@ -164,6 +169,7 @@ function Home(props) {
       ],
     },
     {
+      _id: "1",
       thumbnail:
         "https://scontent.fvca1-4.fna.fbcdn.net/v/t39.30808-6/257464339_3109708449259622_2410193694200403801_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=0debeb&_nc_ohc=eU6XRTsS6ecAX8mPoDI&tn=j7LpXkDUmE8O4tks&_nc_ht=scontent.fvca1-4.fna&oh=bc9b4ed2f863930914848c489f5cac9e&oe=61A2BB31",
       avatarHost:
@@ -203,6 +209,7 @@ function Home(props) {
       ],
     },
     {
+      _id: "1",
       thumbnail:
         "https://scontent.fvca1-4.fna.fbcdn.net/v/t39.30808-6/257464339_3109708449259622_2410193694200403801_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=0debeb&_nc_ohc=eU6XRTsS6ecAX8mPoDI&tn=j7LpXkDUmE8O4tks&_nc_ht=scontent.fvca1-4.fna&oh=bc9b4ed2f863930914848c489f5cac9e&oe=61A2BB31",
       avatarHost:
@@ -242,6 +249,7 @@ function Home(props) {
       ],
     },
     {
+      _id: "1",
       thumbnail:
         "https://scontent.fvca1-4.fna.fbcdn.net/v/t39.30808-6/257464339_3109708449259622_2410193694200403801_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=0debeb&_nc_ohc=eU6XRTsS6ecAX8mPoDI&tn=j7LpXkDUmE8O4tks&_nc_ht=scontent.fvca1-4.fna&oh=bc9b4ed2f863930914848c489f5cac9e&oe=61A2BB31",
       avatarHost:
@@ -282,7 +290,7 @@ function Home(props) {
     },
   ];
   const fetchData = async () => {
-    fetch("http://localhost:2000/event", {
+    fetch("http://localhost:2000/event/upcoming", {
       method: "GET", // or 'PUT'
       headers: {
         "Content-Type": "application/json",
@@ -301,13 +309,30 @@ function Home(props) {
     <div className="home">
       <div className="home__header">
         <p>Kết quả tìm kiếm</p>
+        <div className="actions">
+          <select className="status">
+            <option value="all">Tất cả</option>
+            <option value="up-coming">Sắp diễn ra</option>
+            <option value="on-going">Đang diễn ra</option>
+          </select>
+          <select className="faculty">
+            <option value="all">Tất cả</option>
+            <option value="FIT">FIT</option>
+          </select>
+        </div>
       </div>
       <div className="home__body">
         {data &&
           data.map((item, index) => {
             return (
-              <div className="home__body__event-box">
-                <EventBox data={item} key={index} />
+              <div
+                key={index}
+                className="home__body__event-box"
+                onClick={() => {
+                  history.push("/event/" + item._id);
+                }}
+              >
+                <EventBox data={item} />
               </div>
             );
           })}

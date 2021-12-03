@@ -199,7 +199,7 @@ function MiniGameFeature(props) {
                     if (index > 2) {
                       return (
                         <div
-                          key="index"
+                          key={index}
                           className={classNames({
                             row: true,
                             highline: index % 2 !== 0,

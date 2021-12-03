@@ -1,15 +1,20 @@
 import * as type from "../types";
 
 const initialState = {
-  users: [],
+  user: undefined,
 };
 
 export default function users(state = initialState, action) {
   switch (action.type) {
-    case type.GET_USERS:
+    case type.LOGIN:
       return {
         ...state,
-        users: action.payload,
+        user: action.payload,
+      };
+    case type.LOGOUT:
+      return {
+        ...state,
+        user: undefined,
       };
     default:
       return state;

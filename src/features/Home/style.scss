@@ -10,6 +10,24 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+
+    & > .actions {
+      & > select {
+        width: 200px;
+        height: 38px;
+        border: 1px solid var(--primary-color-blue);
+        border-radius: 10px;
+        background: var(--white-color);
+        color: var(--primary-color-blue);
+        font-size: 16px;
+        padding: 0 10px;
+        margin-right: 10px;
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
   }
 
   &__body {

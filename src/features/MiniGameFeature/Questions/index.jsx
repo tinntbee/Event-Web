@@ -12,6 +12,7 @@ function Questions(props) {
       {listQA.map((item, index) => {
         return (
           <CustomButton
+            key={index}
             size="small"
             variant={state.rowFocus === index ? "contained" : undefined}
             color={state.rowFocus === index ? "primary" : undefined}

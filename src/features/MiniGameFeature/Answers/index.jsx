@@ -13,10 +13,10 @@ function Answers(props) {
         listQA.map((item, index) => {
           return (
             <AnswerRow
+              key={index}
               answers={item}
               rowNumber={index}
               grid={grid}
-              key={index}
               state={state}
               setStateParent={setStateParent}
             />

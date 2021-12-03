@@ -1,10 +1,8 @@
 import React from "react";
-import PropTypes from "prop-types";
-import "./style.scss";
-import FroalaEditorView from "react-froala-wysiwyg/FroalaEditorView";
 import { FacebookProvider, Page } from "react-facebook";
-import { classNames } from "classnames";
+import FroalaEditorView from "react-froala-wysiwyg/FroalaEditorView";
 import { useHistory } from "react-router-dom";
+import "./style.scss";
 
 EventFeature.propTypes = {};
 
@@ -125,7 +123,7 @@ function EventFeature(props) {
                     if (index > 2) {
                       return (
                         <div
-                          key="index"
+                          key={index}
                           className={index % 2 !== 0 ? "row highline" : "row"}
                         >
                           <p className="stt">{index + 1 + "th"}</p>
