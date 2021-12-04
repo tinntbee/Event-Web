@@ -15,7 +15,7 @@ function HeaderContainer(props) {
     dispatch(modifyGridColumns({ columns: e.target.value }));
   };
   const handleKeyChange = (e) => {
-    dispatch(changeColumnKey(e.target))
+    dispatch(changeColumnKey(e.target.value))
   };
   return (
     <Header>

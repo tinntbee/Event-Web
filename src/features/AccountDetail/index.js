@@ -6,9 +6,11 @@ import { storage } from "../../services/firebase";
 import InputField from "./Components/InputField";
 import SelectField from "./Components/SelectField";
 import "./style.scss";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { userAPI } from "../../api/userAPI";
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import { useDispatch } from "react-redux";
+import { snackBarActions } from "../../redux/actions/snackBarActions";
+import { userAction } from "../../redux/actions/usersActions";
 
 AccountDetail.propTypes = {};
 
@@ -41,6 +43,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function AccountDetail(props) {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const classes = useStyles();
   const yesterday = new Date(Date.now() - 86400000);
   const [state, setState] = useState({
@@ -117,35 +121,68 @@ function AccountDetail(props) {
   ];
 
   const fetchUserInfo = async () => {
-    const data = await userAPI.getAccountInfo();
-    if (data) {
-      console.log(data);
-      setState({
-        ...state,
-        avatar: data.avatar,
-        account: {
-          nickname: data.nickname,
-          fullName: data.fullName,
-          gender: data.gender,
-          university: data.university,
-          faculty: data.faculty,
-          studentClass: data.studentClass,
-          email: data.email,
-          phone: data.phone,
-          dob: data.dob.substring(0, 10),
-          avatar: data.avatar,
-        },
+    const data = await userAPI
+      .getAccountInfo()
+      .then((data) => {
+        if (data) {
+          console.log(data);
+          setState({
+            ...state,
+            avatar: data.avatar,
+            account: {
+              nickname: data.nickname,
+              fullName: data.fullName,
+              gender: data.gender,
+              university: data.university,
+              faculty: data.faculty,
+              studentClass: data.studentClass,
+              email: data.email,
+              phone: data.phone,
+              dob: data.dob.substring(0, 10),
+              avatar: data.avatar,
+            },
+          });
+        }
+      })
+      .catch((e) => {
+        dispatch(
+          snackBarActions.open({
+            message: "Bạn cần phải đăng nhập!",
+            variant: "error",
+          })
+        );
+        dispatch(userAction.Logout());
+        history.push("/login");
       });
-    }
   };
 
   const formik = useFormik({
     initialValues: state.account,
     validationSchema: FORM_VALIDATION,
     enableReinitialize: true,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-      const data = userAPI.updateAccountInfo(values);
+    onSubmit: async (values) => {
+      const data = await userAPI
+        .updateAccountInfo(values)
+        .then((data) => {
+          if (data) {
+            dispatch(
+              snackBarActions.open({
+                message: "Đã lưu các thay đổi",
+                variant: "success",
+              })
+            );
+          }
+        })
+        .catch((e) => {
+          dispatch(
+            snackBarActions.open({
+              message: "Bạn cần phải đăng nhập!",
+              variant: "error",
+            })
+          );
+          dispatch(userAction.Logout());
+          history.push("/login");
+        });
     },
   });
 
@@ -189,11 +226,7 @@ function AccountDetail(props) {
     }
   };
 
-  const { enqueueSnackbar } = useSnackbar();
-  const handleClickVariant = (variant) => () => {
-    // variant could be success, error, warning, info, or default
-    enqueueSnackbar('This is a success message!', { variant });
-  };
+  const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
     fetchUserInfo();

@@ -13,7 +13,7 @@ function EventBox(props) {
           <div className="event-box__thumbnail">
             <div
               className="thumbnail"
-              style={{ backgroundImage: `url(${data.thumbnail})` }}
+              style={{ backgroundImage: `url(${data.standee})` }}
             >
               <div
                 className="avatar_host"
@@ -22,11 +22,11 @@ function EventBox(props) {
             </div>
           </div>
           <div className="event-box__information">
-            <h3 className="title">{data.title}</h3>
+            <h3 className="title">{data.name}</h3>
             <p className="description">{data.description}</p>
             <div className="detail">
               <p>
-                <span className="black">Host: </span> {data.host}
+                <span className="black">Host: </span> {data.nameHost}
               </p>
               <p>
                 <span className="black">Status: </span>
@@ -34,13 +34,13 @@ function EventBox(props) {
               </p>
               <p>
                 <span className="black">Times: </span>
-                {data.time}
+                {data.timeBegin.substring(0, 16).replaceAll("-", "/").replaceAll("T", " ") + " - " + data.timeEnd.substring(0, 16).replaceAll("-", "/").replaceAll("T", " ")}
               </p>
               <p>
                 <span>Subscriber: </span>
               </p>
               <div className="subscribers">
-                {data.subscribers.map((item, index) => {
+                {data.favorites.map((item, index) => {
                   return (
                     <div
                       key={index}
@@ -49,7 +49,7 @@ function EventBox(props) {
                   );
                 })}
                 <div className="total">
-                  <p>{data.totalSubscriber - 4}+</p>
+                  <p>{data.favorites.length - 4}+</p>
                 </div>
               </div>
             </div>

@@ -3,8 +3,8 @@ import * as type from "../types";
 const initialState = {
   events: [],
   search: "",
-  status: "all",
-  faculty: "FIT",
+  status: "-1",
+  faculty: "all",
   page: 1,
   size: 10,
   limit: 0,

@@ -29,7 +29,7 @@ function LoginFeature(props) {
           dispatch(userAction.Login(data.user));
           localStorage.setItem("token", data.token);
           localStorage.setItem("user", JSON.stringify(data.user));
-          history.push("/logininfo");
+          history.push("/account-detail/information");
         }
       })
       .catch((error) => console.error(error));

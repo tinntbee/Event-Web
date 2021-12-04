@@ -9,18 +9,18 @@ ListEventsHorizontal.propTypes = {};
 function ListEventsHorizontal(props) {
   const data = [
     {
-      thumbnail:
+      standee:
         "https://scontent.fvca1-4.fna.fbcdn.net/v/t39.30808-6/257464339_3109708449259622_2410193694200403801_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=0debeb&_nc_ohc=eU6XRTsS6ecAX8mPoDI&tn=j7LpXkDUmE8O4tks&_nc_ht=scontent.fvca1-4.fna&oh=bc9b4ed2f863930914848c489f5cac9e&oe=61A2BB31",
       avatarHost:
         "https://scontent.fvca1-1.fna.fbcdn.net/v/t39.30808-6/259520658_3111180589112408_3963736788354818155_n.jpg?_nc_cat=105&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=d0-waFdz03UAX-P1F6C&_nc_ht=scontent.fvca1-1.fna&oh=e3bca41d27c47528dbe8425b7d7c4929&oe=61A35697",
-      title: "CUỘC THI LẬP TRÌNH BECOD3R NĂM 2021",
+      name: "CUỘC THI LẬP TRÌNH BECOD3R NĂM 2021",
       description:
         "Cuộc thi học thuật với cái tên hoàn toàn mới mẻ 'beCod3r' sẽ đổ bộ và hứa hẹn là sân chơi bổ ích, thú vị mà không kém phần hấp dẫn",
       host: "GDSC - HCMUTE",
       status: "Đang diễn ra",
-      time: "18/11/2021 - 25/11/2021",
-      totalSubscriber: 5,
-      subscribers: [
+      timeBegin: "18/11/2021T08:00",
+      timeEnd: "25/11/2021T09:00",
+      favorites: [
         {
           _id: 1,
           name: "Nguyễn Trung Tín",
@@ -48,18 +48,18 @@ function ListEventsHorizontal(props) {
       ],
     },
     {
-      thumbnail:
+      standee:
         "https://scontent.fvca1-4.fna.fbcdn.net/v/t39.30808-6/257464339_3109708449259622_2410193694200403801_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=0debeb&_nc_ohc=eU6XRTsS6ecAX8mPoDI&tn=j7LpXkDUmE8O4tks&_nc_ht=scontent.fvca1-4.fna&oh=bc9b4ed2f863930914848c489f5cac9e&oe=61A2BB31",
       avatarHost:
         "https://scontent.fvca1-1.fna.fbcdn.net/v/t39.30808-6/259520658_3111180589112408_3963736788354818155_n.jpg?_nc_cat=105&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=d0-waFdz03UAX-P1F6C&_nc_ht=scontent.fvca1-1.fna&oh=e3bca41d27c47528dbe8425b7d7c4929&oe=61A35697",
-      title: "CUỘC THI LẬP TRÌNH BECOD3R NĂM 2021",
+      name: "CUỘC THI LẬP TRÌNH BECOD3R NĂM 2021",
       description:
         "Cuộc thi học thuật với cái tên hoàn toàn mới mẻ 'beCod3r' sẽ đổ bộ và hứa hẹn là sân chơi bổ ích, thú vị mà không kém phần hấp dẫn",
       host: "GDSC - HCMUTE",
       status: "Đang diễn ra",
-      time: "18/11/2021 - 25/11/2021",
-      totalSubscriber: 5,
-      subscribers: [
+      timeBegin: "18/11/2021T08:00",
+      timeEnd: "25/11/2021T09:00",
+      favorites: [
         {
           _id: 1,
           name: "Nguyễn Trung Tín",
@@ -87,18 +87,18 @@ function ListEventsHorizontal(props) {
       ],
     },
     {
-      thumbnail:
+      standee:
         "https://scontent.fvca1-4.fna.fbcdn.net/v/t39.30808-6/257464339_3109708449259622_2410193694200403801_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=0debeb&_nc_ohc=eU6XRTsS6ecAX8mPoDI&tn=j7LpXkDUmE8O4tks&_nc_ht=scontent.fvca1-4.fna&oh=bc9b4ed2f863930914848c489f5cac9e&oe=61A2BB31",
       avatarHost:
         "https://scontent.fvca1-1.fna.fbcdn.net/v/t39.30808-6/259520658_3111180589112408_3963736788354818155_n.jpg?_nc_cat=105&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=d0-waFdz03UAX-P1F6C&_nc_ht=scontent.fvca1-1.fna&oh=e3bca41d27c47528dbe8425b7d7c4929&oe=61A35697",
-      title: "CUỘC THI LẬP TRÌNH BECOD3R NĂM 2021",
+      name: "CUỘC THI LẬP TRÌNH BECOD3R NĂM 2021",
       description:
         "Cuộc thi học thuật với cái tên hoàn toàn mới mẻ 'beCod3r' sẽ đổ bộ và hứa hẹn là sân chơi bổ ích, thú vị mà không kém phần hấp dẫn",
       host: "GDSC - HCMUTE",
       status: "Đang diễn ra",
-      time: "18/11/2021 - 25/11/2021",
-      totalSubscriber: 5,
-      subscribers: [
+      timeBegin: "18/11/2021T08:00",
+      timeEnd: "25/11/2021T09:00",
+      favorites: [
         {
           _id: 1,
           name: "Nguyễn Trung Tín",
@@ -126,18 +126,18 @@ function ListEventsHorizontal(props) {
       ],
     },
     {
-      thumbnail:
+      standee:
         "https://scontent.fvca1-4.fna.fbcdn.net/v/t39.30808-6/257464339_3109708449259622_2410193694200403801_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=0debeb&_nc_ohc=eU6XRTsS6ecAX8mPoDI&tn=j7LpXkDUmE8O4tks&_nc_ht=scontent.fvca1-4.fna&oh=bc9b4ed2f863930914848c489f5cac9e&oe=61A2BB31",
       avatarHost:
         "https://scontent.fvca1-1.fna.fbcdn.net/v/t39.30808-6/259520658_3111180589112408_3963736788354818155_n.jpg?_nc_cat=105&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=d0-waFdz03UAX-P1F6C&_nc_ht=scontent.fvca1-1.fna&oh=e3bca41d27c47528dbe8425b7d7c4929&oe=61A35697",
-      title: "CUỘC THI LẬP TRÌNH BECOD3R NĂM 2021",
+      name: "CUỘC THI LẬP TRÌNH BECOD3R NĂM 2021",
       description:
         "Cuộc thi học thuật với cái tên hoàn toàn mới mẻ 'beCod3r' sẽ đổ bộ và hứa hẹn là sân chơi bổ ích, thú vị mà không kém phần hấp dẫn",
       host: "GDSC - HCMUTE",
       status: "Đang diễn ra",
-      time: "18/11/2021 - 25/11/2021",
-      totalSubscriber: 5,
-      subscribers: [
+      timeBegin: "18/11/2021T08:00",
+      timeEnd: "25/11/2021T09:00",
+      favorites: [
         {
           _id: 1,
           name: "Nguyễn Trung Tín",
@@ -163,7 +163,7 @@ function ListEventsHorizontal(props) {
             "https://scontent.fvca1-1.fna.fbcdn.net/v/t39.30808-6/244641786_2687965474830740_3330566472857655919_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=WZNiFPp-WtUAX9xT2M1&_nc_oc=AQmjMb_LyKtlv_GBRGJGZJQ9WjV5fjlzkvL93EqdAcWo2orcB9i_wrzZbLLvMdxbTlijhymuk_Rn_WWReGOfGqBB&_nc_ht=scontent.fvca1-1.fna&oh=6600f2c592559d94c8d164391dbfe0a8&oe=61A54D9C",
         },
       ],
-    },
+    }
   ];
   const scrollRef = React.createRef();
   const [positionScroll, setPositionScroll] = useState(0);

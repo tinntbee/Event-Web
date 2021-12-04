@@ -5,12 +5,18 @@ import GroupFileInput from "../../../components/GroupFileInput";
 PartUpLoadFile.propTypes = {};
 
 function PartUpLoadFile(props) {
-  const { data } = props;
+  const { state, setStateParent } = props;
   const handleBackgroundOnChange = (file) => {
-    props.handleBackgroundOnChange(file);
+    setStateParent({
+      ...state,
+      file: { ...state.file, background: { file: file.file, url: file.url } },
+    });
   };
   const handleStandeeOnChange = (file) => {
-    props.handleStandeeOnChange(file);
+    setStateParent({
+      ...state,
+      file: { ...state.file, standee: { file: file.file, url: file.url } },
+    });
   };
   return (
     <div className="part part-upload-file">
@@ -19,7 +25,7 @@ function PartUpLoadFile(props) {
         <div
           className="cover-view"
           style={{
-            backgroundImage: `url(${data.background})`,
+            backgroundImage: `url(${state.file.background.url})`,
           }}
         />
       </div>
@@ -28,7 +34,7 @@ function PartUpLoadFile(props) {
         <div
           className="standee"
           style={{
-            backgroundImage: `url(${data.standee})`,
+            backgroundImage: `url(${state.file.standee.url})`,
           }}
         ></div>
       </div>

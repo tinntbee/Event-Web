@@ -16,6 +16,7 @@ function ButtonAnswer(props) {
   const { isDisabled, columnNumber, rowNumber } = props;
   const dispatch = useDispatch();
   const grid = useSelector((state) => state.miniGame.miniGame.grid);
+  const columnKey = useSelector((state) => state.miniGame.miniGame.columnKey);
   const rowFocus = useSelector((state) => state.miniGame.miniGame.rowFocus);
   const currentQA = useSelector(
     (state) => state.miniGame.miniGame.listQA[rowNumber]
@@ -72,6 +73,7 @@ function ButtonAnswer(props) {
       disabled={isDisabled}
       onClick={isDisabled ? handleAnswerBoxClick : undefined}
       isFocus={rowFocus === rowNumber}
+      isKey={columnKey === columnNumber}
     >
       <Answer
         type="text"

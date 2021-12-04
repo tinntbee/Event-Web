@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FacebookProvider, Page } from "react-facebook";
 import FroalaEditorView from "react-froala-wysiwyg/FroalaEditorView";
 import { useHistory } from "react-router-dom";
+import axiosClient from "../../api/axiosClient";
 import "./style.scss";
 
 EventFeature.propTypes = {};
 
 function EventFeature(props) {
   const history = useHistory();
-  const data = {
+  const [data, setData] = useState({
     _id: "",
     background: "",
     standee: "",
@@ -17,7 +18,7 @@ function EventFeature(props) {
     dayEnd: "",
     description: "",
     _idMiniGame: "1",
-  };
+  });
   const miniGameData = {
     player: [
       { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
@@ -35,6 +36,32 @@ function EventFeature(props) {
   const handlePlayNowClick = () => {
     history.push("/mini-game/" + data._idMiniGame);
   };
+  useEffect(() => {
+    const { _id } = props.match.params;
+    if (_id === "new") {
+    } else {
+      const url = "/event/detail/" + _id;
+      axiosClient
+        .get(url)
+        .then((data) => {
+          setData({
+            ...data,
+            _id: data._id,
+            name: data.name,
+            background: data.background,
+            standee: data.standee,
+            dayBegin: data.timeBegin.substring(0, 16),
+            dayEnd: data.timeEnd.substring(0, 16),
+            description: data.description,
+            linkFanpage: data.link
+          });
+          console.log(data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }, []);
   return (
     <div className="event">
       <div className="event__title">
@@ -75,7 +102,7 @@ function EventFeature(props) {
             <Page
               width="456px"
               height="709px"
-              href="https://www.facebook.com/DoanHoiITUTE"
+              href={data.linkFanpage ? data.linkFanpage : "https://www.facebook.com/DoanHoiITUTE"}
               tabs="timeline"
             />
           </FacebookProvider>

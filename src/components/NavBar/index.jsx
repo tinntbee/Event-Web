@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
+import { homeActions } from "../../redux/actions/homeActions";
 import { userAction } from "../../redux/actions/usersActions";
 import "./style.scss";
 
@@ -15,7 +16,7 @@ function NavBar(props) {
   const history = useHistory();
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
-      alert(event.target.value);
+      dispatch(homeActions.getEvents({ search: event.target.value }));
       history.push("/home");
     }
   };
@@ -40,7 +41,7 @@ function NavBar(props) {
   };
 
   history.listen(function (location) {
-    setLocationActive(location.pathname);
+    setLocationActive(window.location.pathname);
   });
 
   useEffect(() => {
@@ -73,17 +74,21 @@ function NavBar(props) {
           >
             Trang chủ
           </Link>
-          <Link
-            to="/host"
-            className={classNames({
-              active: state.active === "host",
-            })}
-          >
-            Tổ chức sự kiện
-          </Link>
+          {user && (
+            <Link
+              to="/host"
+              className={classNames({
+                active: state.active === "host",
+              })}
+            >
+              Tổ chức sự kiện
+            </Link>
+          )}
           {user ? (
             <>
-              <Link onClick={handleLogout}>Đăng xuất</Link>
+              <Link to="#" onClick={handleLogout}>
+                Đăng xuất
+              </Link>
               <Link to="/account-detail">
                 <div
                   className="avatar"

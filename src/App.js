@@ -14,8 +14,26 @@ import EventListFeature from "./features/eventlist";
 import MemberListFeature from "./features/memberlist";
 import HostFeature from "./features/HostFeature";
 import NavBar from "./components/NavBar";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import { useDispatch, useSelector } from "react-redux";
+import { snackBarActions } from "./redux/actions/snackBarActions";
+import MyEventsFeature from "./features/MyEvents";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 function App() {
+  const dispatch = useDispatch();
+  const snackBar = useSelector((state) => state.snackBar);
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    dispatch(snackBarActions.close());
+  };
   return (
     <div className="App">
       <NavBar />
@@ -38,7 +56,7 @@ function App() {
             exact
           />
           <Route path="/game-studio" component={GameStudio} exact />
-          <Route path="/event-studio" component={EventStudio} exact />
+          <Route path="/event-studio/:_id" component={EventStudio} exact />
           <Route path="/login" component={LoginFeature} />
           <Route path="/home" component={Home} />
           <Route path="/event/:_id" component={EventFeature} exact />
@@ -49,8 +67,23 @@ function App() {
           <Route path="/memberlist" component={MemberListFeature} exact />
           <Route path="/minigamelist" component={MiniGameFeature} exact />
           <Route path="/host" component={HostFeature} exact />
+          <Route path="/myevent" component={MyEventsFeature} exact />
         </Switch>
       </div>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={snackBar.open}
+        autoHideDuration={snackBar.autoHideDuration}
+        onClose={handleClose}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={snackBar.variant}
+          sx={{ width: "100%" }}
+        >
+          {snackBar.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

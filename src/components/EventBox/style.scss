@@ -12,6 +12,7 @@
     & > .thumbnail {
       width: 250px;
       height: 387px;
+      background: var(--base-color-gray);
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
@@ -43,6 +44,7 @@
         width: 80px;
         height: 80px;
         border-radius: 50%;
+        background: var(--base-color-gray);
         background-position: center;
         background-repeat: no-repeat;
         border: 4px solid var(--white-color);
