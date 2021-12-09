@@ -14,10 +14,8 @@ function EventStudio(props) {
   const [state, setState] = useState({
     data: {
       _id: "new",
-      background:
-        "https://scontent.fvca1-3.fna.fbcdn.net/v/t39.30808-6/257531046_3108924536004680_2313253056931116257_n.jpg?_nc_cat=103&ccb=1-5&_nc_sid=e3f864&_nc_ohc=gzZRSlPJDWEAX_BQdA5&_nc_ht=scontent.fvca1-3.fna&oh=b68aa1081a8bd0780daa1c29801c1db1&oe=61A50C2C",
-      standee:
-        "https://scontent.fvca1-4.fna.fbcdn.net/v/t39.30808-6/257464339_3109708449259622_2410193694200403801_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=0debeb&_nc_ohc=WXUGwhTu01MAX-NKfJN&tn=j7LpXkDUmE8O4tks&_nc_ht=scontent.fvca1-4.fna&oh=9b37e6213e7086ee6e5aeb72135cf73c&oe=61A6AFB1",
+      background: "",
+      standee: "",
       name: "event-name",
       participant: "HCMUTE",
       dayBegin: "2021-10-24T10:30",
@@ -28,11 +26,11 @@ function EventStudio(props) {
     file: {
       background: {
         file: null,
-        url: "https://scontent.fvca1-3.fna.fbcdn.net/v/t39.30808-6/257531046_3108924536004680_2313253056931116257_n.jpg?_nc_cat=103&ccb=1-5&_nc_sid=e3f864&_nc_ohc=gzZRSlPJDWEAX_BQdA5&_nc_ht=scontent.fvca1-3.fna&oh=b68aa1081a8bd0780daa1c29801c1db1&oe=61A50C2C",
+        url: "",
       },
       standee: {
         file: null,
-        url: "https://scontent.fvca1-4.fna.fbcdn.net/v/t39.30808-6/257464339_3109708449259622_2410193694200403801_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=0debeb&_nc_ohc=WXUGwhTu01MAX-NKfJN&tn=j7LpXkDUmE8O4tks&_nc_ht=scontent.fvca1-4.fna&oh=9b37e6213e7086ee6e5aeb72135cf73c&oe=61A6AFB1",
+        url: "",
       },
     },
   });
@@ -47,6 +45,7 @@ function EventStudio(props) {
       axiosClient
         .get(url)
         .then((data) => {
+          console.log({ data });
           setState({
             ...state,
             data: {
@@ -74,24 +73,25 @@ function EventStudio(props) {
     }
   }, []);
 
-  const fetchPostAPI = async () => {
+  const fetchPostAPI = async (background, standee) => {
     const data = {
       _id: state.data._id,
       name: state.data.name,
       description: state.data.description,
-      standee: state.data.standee,
+      standee: standee,
       beginTime: state.data.dayBegin + ":00.000Z",
       endTime: state.data.dayEnd + ":00.000Z",
       fanpage: "https://www.facebook.com/gdsc.hcmute",
-      background: state.data.background,
+      background: background,
     };
+    console.log({ data });
     if (state.data._id === "new") {
       const url = "/event/create";
       axiosClient
         .post(url, data)
         .then((data) => {
           console.log(data);
-          history.push("/game-studio");
+          history.push("/game-studio/" + data.minigameId);
           dispatch(
             snackBarActions.open({
               message: "Lưu các thay đổi thành công",

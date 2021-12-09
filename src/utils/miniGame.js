@@ -5,3 +5,15 @@ export function answerInitialization(length = 0) {
   }
   return array;
 }
+
+export function answersRaw(aBegin, aEnd, answer, gridColumn){
+  let answers = [];
+  for (let index = 0; index < gridColumn; index++) {
+    if (index >= aBegin && index <= aEnd){
+      answers.push(answer[index-aBegin]);
+    }else{
+      answer.push("");
+    }
+  }
+  return answers;
+}

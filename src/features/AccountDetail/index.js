@@ -125,7 +125,6 @@ function AccountDetail(props) {
       .getAccountInfo()
       .then((data) => {
         if (data) {
-          console.log(data);
           setState({
             ...state,
             avatar: data.avatar,

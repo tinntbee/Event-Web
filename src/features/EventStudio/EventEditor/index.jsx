@@ -24,37 +24,45 @@ function EventEditor(props) {
     setPart(part + 1);
   };
 
-  const handleSubmit = async () => {
-    if (state.data.name) {
-      async function uploadTaskPromise(path, file) {
-        return new Promise(function (resolve, reject) {
-          const storageRef = storage.ref(path);
-          const uploadTask = storageRef.put(file);
-          uploadTask.on(
-            "state_changed",
-            function (snapshot) {
-              var progress =
-                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-              console.log("Upload is " + progress + "% done");
-            },
-            function error(err) {
-              console.log("error", err);
-              reject();
-            },
-            function complete() {
-              uploadTask.snapshot.ref
-                .getDownloadURL()
-                .then(function (downloadURL) {
-                  resolve(downloadURL);
-                });
-            }
-          );
-        });
-      }
+  const uploadTaskPromise = async (path, file) => {
+    return new Promise(function (resolve, reject) {
+      const storageRef = storage.ref(path);
+      const uploadTask = storageRef.put(file);
+      uploadTask.on(
+        "state_changed",
+        function (snapshot) {
+          var progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+        },
+        function error(err) {
+          console.log("error", err);
+          reject();
+        },
+        function complete() {
+          uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+            resolve(downloadURL);
+          });
+        }
+      );
+    });
+  };
 
+  useEffect(() => {
+    setStateParent({
+      ...state,
+      data: { ...state.data, background: "hello" },
+    });
+    console.log({ before: state });
+  }, []);
+
+  const handleSubmit = async () => {
+    let background = undefined;
+    let standee = undefined;
+    if (state.data.name) {
       if (state.file.background.file) {
         //upload background
-        const backgroundUrl = await uploadTaskPromise(
+        background = await uploadTaskPromise(
           `events/backgrounds/${
             state.data.name +
             "." +
@@ -62,16 +70,11 @@ function EventEditor(props) {
           }`,
           state.file.background.file
         );
-        setStateParent({
-          ...state,
-          data: { ...state.data, background: backgroundUrl },
-        });
       }
 
       if (state.file.standee.file) {
         //upload standee
-
-        const standeeUrl = await uploadTaskPromise(
+        standee = await uploadTaskPromise(
           `events/standees/${
             state.data.name +
             "." +
@@ -79,16 +82,16 @@ function EventEditor(props) {
           }`,
           state.file.standee.file
         );
-
-        console.log(standeeUrl);
-        setStateParent({
-          ...state,
-          data: { ...state.data, standee: standeeUrl },
-        });
       }
-      console.log(state);
 
-      await fetchPostAPI();
+      if (!background) {
+        background = state.data.background;
+      }
+      if (!standee) {
+        standee = state.data.standee;
+      }
+
+      await fetchPostAPI(background, standee);
     }
   };
 

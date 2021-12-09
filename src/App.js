@@ -55,7 +55,7 @@ function App() {
             component={RegisteredEvent}
             exact
           />
-          <Route path="/game-studio" component={GameStudio} exact />
+          <Route path="/game-studio/:_id" component={GameStudio} exact />
           <Route path="/event-studio/:_id" component={EventStudio} exact />
           <Route path="/login" component={LoginFeature} />
           <Route path="/home" component={Home} />

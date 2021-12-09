@@ -18,14 +18,15 @@ import {
 GameStudio.propTypes = {};
 
 function GameStudio(props) {
+  const { _id } = props.match.params;
   const dispatch = useDispatch();
   const grid = useSelector((state) => state.grid);
   const state = useSelector((state) => state.miniGame.miniGame);
-  const rowFocus = useSelector(state=>state.rowFocus);
+  const rowFocus = useSelector((state) => state.rowFocus);
   useEffect(() => {
-    dispatch(getMiniGame(null));
+    dispatch(getMiniGame(_id));
   }, []);
-  
+
   return (
     <Container>
       <Title>
@@ -54,12 +55,9 @@ function GameStudio(props) {
         </div>
       </Header>
       <Body>
-        <QuestionControl
-          listQA={state.listQA}
-          questionActive={rowFocus}
-        />
+        <QuestionControl listQA={state.listQA} questionActive={rowFocus} />
         <AnswersViewer listQA={state.listQA} grid={state.grid} />
-        <QuestionEditor/>
+        <QuestionEditor />
       </Body>
     </Container>
   );
