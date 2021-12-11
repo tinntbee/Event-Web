@@ -15,22 +15,6 @@ function Home(props) {
     (state) => state.home
   );
   const [data, setData] = useState();
-  // const fetchData = async () => {
-  //   fetch("http://localhost:2000/event/search", {
-  //     method: "GET", // or 'PUT'
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log("Success:", data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error:", error);
-  //     });
-  // };
-  // fetchData();
   useEffect(() => {
     const url = "/event/search";
     axiosClient

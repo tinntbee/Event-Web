@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import "./style.scss";
 import { FacebookProvider, Page } from "react-facebook";
@@ -8,11 +8,15 @@ import Answers from "./Answers";
 import Contents from "./Contents";
 import Player from "./Player";
 import classNames from "classnames";
+import axiosClient from "../../api/axiosClient";
+import { answerInitialization } from "../../utils/miniGame";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 MiniGameFeature.propTypes = {};
 
 function MiniGameFeature(props) {
-  const data = {
+  const [data, setData] = useState({
     grid: { rows: 8, columns: 8 },
     listQA: [
       {
@@ -73,14 +77,7 @@ function MiniGameFeature(props) {
       },
     ],
     columnKey: 4,
-  };
-  const event = {
-    _id: "1",
-    name: "cuộc thi học thuật Becod3r",
-    dayBegin: "2021-09-27T08:00",
-    dayEnd: "2021-09-27T08:00",
-    status: "đang diễn ra",
-  };
+  });
   const miniGameData = {
     player: [
       { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
@@ -107,19 +104,132 @@ function MiniGameFeature(props) {
   };
   const _idUser = "2";
   const [state, setState] = useState({ ...data, rowFocus: 0 });
+  const [eventState, setEventState] = useState({
+    _id: "",
+    name: "",
+    timeBegin: "-",
+    timeEnd: "-",
+    link: "",
+  });
+  const [playerState, setPlayerState] = useState({
+    _id: "",
+    nickname: "",
+    score: "",
+    rank: "",
+    email: "",
+    avatar: "",
+  });
+  const [topPlayerState, setTopPlayerState] = useState();
+  const [loading, setLoading] = useState(false);
+  let idEvent = "";
+
+  const fetchDataMiniGame = async () => {
+    const { _id } = props.match.params;
+    const url = "/minigame/" + _id;
+    await axiosClient.get(url).then((res) => {
+      const listQA = [];
+      for (const qa of res.listQA) {
+        listQA.push({
+          questionContent: qa.questionContent,
+          questionImageUrl: qa.questionImageUrl,
+          aBegin: qa.aBegin,
+          aEnd: qa.aEnd,
+          answers: answerInitialization(res.gridColumn),
+        });
+      }
+      idEvent = res.idEvent;
+      setData({
+        _id: res._id,
+        idEvent: res.idEvent,
+        grid: { rows: res.gridRow, columns: res.gridColumn },
+        listQA: listQA,
+        columnKey: res.columnKey,
+        played: res.played,
+      });
+      setState({
+        ...{
+          _id: res._id,
+          idEvent: res.idEvent,
+          grid: { rows: res.gridRow, columns: res.gridColumn },
+          listQA: listQA,
+          played: res.played,
+          columnKey: res.columnKey,
+        },
+        rowFocus: 0,
+      });
+    });
+  };
+  const fetchDataEvent = async () => {
+    const url = "/event/detail/" + idEvent;
+    axiosClient
+      .get(url)
+      .then((data) => {
+        setEventState({
+          _id: data._id,
+          name: data.name,
+          timeBegin: data.timeBegin,
+          timeEnd: data.timeEnd,
+          link: data.link,
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+  const fetchDataPlayer = async () => {
+    const { _id } = props.match.params;
+    const url = "/minigame/player/" + _id;
+    axiosClient
+      .get(url)
+      .then((data) => {
+        setPlayerState({
+          _id: data._id,
+          nickname: data.nickname,
+          score: data.score,
+          rank: data.rank,
+          email: data.email,
+          avatar: data.avatar,
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      await fetchDataMiniGame();
+      await fetchDataEvent();
+      await fetchDataPlayer();
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
   return (
     <div className="mini-game">
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <div className="mini-game__header">
         <div>
-          <h1>MINIGAME: {event.name.toUpperCase()}</h1>
+          <h1>MINIGAME: {eventState.name.toUpperCase()}</h1>
           <div className="information">
-            <span>{event.status}</span>
+            <span>Đang diễn ra</span>
             <div />
             <span>
-              {event &&
-                event.dayBegin.replaceAll("-", "/").replaceAll("T", " ") +
+              {eventState &&
+                eventState.timeBegin
+                  .substr(0, 16)
+                  .replaceAll("-", "/")
+                  .replaceAll("T", " ") +
                   " - " +
-                  event.dayEnd.replaceAll("-", "/").replaceAll("T", " ")}
+                  eventState.timeEnd
+                    .substr(0, 16)
+                    .replaceAll("-", "/")
+                    .replaceAll("T", " ")}
             </span>
             <div />
             <span>
@@ -129,7 +239,7 @@ function MiniGameFeature(props) {
           </div>
         </div>
         <div>
-          <Link to={`/event/${event._id}`}>Trở về trang sự kiện</Link>
+          <Link to={`/event/${eventState._id}`}>Trở về trang sự kiện</Link>
         </div>
       </div>
       <div className="mini-game__content">
@@ -152,7 +262,13 @@ function MiniGameFeature(props) {
         />
       </div>
       <div className="mini-game__footer">
-        <Player />
+        <Player
+          state={state}
+          setStateParent={setState}
+          data={playerState}
+          setLoading={setLoading}
+          setPlayerState={setPlayerState}
+        />
         <div className="event-detail">
           <div className="top-player">
             <div className="header">
@@ -221,7 +337,7 @@ function MiniGameFeature(props) {
             <Page
               width="678px"
               height="920px"
-              href="https://www.facebook.com/DoanHoiITUTE"
+              href={eventState.link}
               tabs="timeline"
             />
           </FacebookProvider>

@@ -6,6 +6,25 @@ EventBox.propTypes = {};
 
 function EventBox(props) {
   const { data } = props;
+  let statusString = "";
+  const statusParse = () => {
+    const timeBegin = Date.parse(data.timeBegin);
+    const timeEnd = Date.parse(data.timeEnd);
+    const timeNow = Date.now();
+    if (timeBegin > timeNow) {
+      statusString = "Sắp diễn ra";
+      return;
+    }
+    if (timeEnd < timeNow) {
+      statusString = "Đã diễn ra";
+      return;
+    }
+    if (timeBegin <= timeNow && timeNow <= timeEnd) {
+      statusString = "Đang diễn ra";
+      return;
+    }
+  };
+  statusParse();
   return (
     <>
       {data && (
@@ -30,11 +49,19 @@ function EventBox(props) {
               </p>
               <p>
                 <span className="black">Status: </span>
-                {data.status}
+                {statusString}
               </p>
               <p>
                 <span className="black">Times: </span>
-                {data.timeBegin.substring(0, 16).replaceAll("-", "/").replaceAll("T", " ") + " - " + data.timeEnd.substring(0, 16).replaceAll("-", "/").replaceAll("T", " ")}
+                {data.timeBegin
+                  .substring(0, 16)
+                  .replaceAll("-", "/")
+                  .replaceAll("T", " ") +
+                  " - " +
+                  data.timeEnd
+                    .substring(0, 16)
+                    .replaceAll("-", "/")
+                    .replaceAll("T", " ")}
               </p>
               <p>
                 <span>Subscriber: </span>

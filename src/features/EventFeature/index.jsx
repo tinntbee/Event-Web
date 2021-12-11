@@ -44,6 +44,7 @@ function EventFeature(props) {
       axiosClient
         .get(url)
         .then((data) => {
+          console.log({ data });
           setData({
             ...data,
             _id: data._id,
@@ -53,15 +54,28 @@ function EventFeature(props) {
             dayBegin: data.timeBegin.substring(0, 16),
             dayEnd: data.timeEnd.substring(0, 16),
             description: data.description,
-            linkFanpage: data.link
+            linkFanpage: data.link,
+            isFavorites: data.isFavorites,
+            _idMiniGame: data.minigameId,
           });
-          console.log(data);
         })
         .catch((e) => {
           console.log(e);
         });
     }
   }, []);
+  const handleUnRegister = async () => {
+    const url = "event/unRegisterEvent/" + data._id;
+    await axiosClient
+      .post(url)
+      .then((res) => setData({ ...data, isFavorites: res.isFavorites }));
+  };
+  const handleRegister = async () => {
+    const url = "event/registerEvent/" + data._id;
+    await axiosClient
+      .post(url)
+      .then((res) => setData({ ...data, isFavorites: res.isFavorites }));
+  };
   return (
     <div className="event">
       <div className="event__title">
@@ -75,7 +89,11 @@ function EventFeature(props) {
           />
           <div className="name">
             <p>{data && data.name}</p>
-            <button>Register</button>
+            {data.isFavorites ? (
+              <button onClick={handleUnRegister}>Hủy đăng kí</button>
+            ) : (
+              <button onClick={handleRegister}>Đăng kí</button>
+            )}
           </div>
           <div className="information">
             <p>Đang diễn ra</p>
@@ -102,7 +120,11 @@ function EventFeature(props) {
             <Page
               width="456px"
               height="709px"
-              href={data.linkFanpage ? data.linkFanpage : "https://www.facebook.com/DoanHoiITUTE"}
+              href={
+                data.linkFanpage
+                  ? data.linkFanpage
+                  : "https://www.facebook.com/DoanHoiITUTE"
+              }
               tabs="timeline"
             />
           </FacebookProvider>

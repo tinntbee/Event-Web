@@ -7,6 +7,8 @@ import axiosClient from "../../api/axiosClient";
 import { useDispatch } from "react-redux";
 import { snackBarActions } from "../../redux/actions/snackBarActions";
 import { useHistory } from "react-router";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 EventStudio.propTypes = {};
 
@@ -36,6 +38,7 @@ function EventStudio(props) {
   });
   const dispatch = useDispatch();
   const history = useHistory();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const { _id } = props.match.params;
@@ -74,6 +77,7 @@ function EventStudio(props) {
   }, []);
 
   const fetchPostAPI = async (background, standee) => {
+    setLoading(true);
     const data = {
       _id: state.data._id,
       name: state.data.name,
@@ -90,14 +94,14 @@ function EventStudio(props) {
       axiosClient
         .post(url, data)
         .then((data) => {
-          console.log(data);
-          history.push("/game-studio/" + data.minigameId);
+          setLoading(false);
           dispatch(
             snackBarActions.open({
               message: "Lưu các thay đổi thành công",
               variant: "success",
             })
           );
+          history.push("/game-studio/" + data.minigameId);
         })
         .catch((e) => {
           console.log(e);
@@ -113,14 +117,14 @@ function EventStudio(props) {
       axiosClient
         .post(url, data)
         .then((data) => {
-          console.log(data);
-          history.push("/game-studio");
+          setLoading(false);
           dispatch(
             snackBarActions.open({
               message: "Lưu các thay đổi thành công",
               variant: "success",
             })
           );
+          history.push("/game-studio/" + data.minigameId);
         })
         .catch((e) => {
           console.log(e);
@@ -130,6 +134,12 @@ function EventStudio(props) {
 
   return (
     <div className="event-studio">
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <div className="event-studio__title">
         <div
           className="event-studio-icon"

@@ -31,7 +31,9 @@ function QuestionControl(props) {
             />
           );
         })}
-        <AddButton onClick={handleClickNewQuestionBottom} />
+        <AddButton
+          onClick={handleClickNewQuestionBottom}
+        />
       </Body>
     </Questions>
   );

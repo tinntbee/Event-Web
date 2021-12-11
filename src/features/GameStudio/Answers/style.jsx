@@ -25,20 +25,31 @@ export const AnswerBox = styled.div`
   position: relative;
   border-radius: 10px;
   background: ${(props) =>
-    props.disabled ? __primary_color_10 : __white_color};
-  box-shadow: ${(props) => (props.isFocus && !props.disabled ? __box_shadow_016 : !props.disabled ? __box_shadow_016 : "unset")};
+    props.disabled
+      ? __primary_color_10
+      : props.isKey
+      ? __primary_color
+      : __white_color};
+  box-shadow: ${(props) =>
+    props.isFocus && !props.disabled
+      ? __box_shadow_016
+      : !props.disabled
+      ? __box_shadow_016
+      : "unset"};
   transition: all 0.2s linear;
   display: inline-block;
   border-width: 1px;
   border-style: solid;
-  border-color: ${(props) => (props.isFocus && !props.disabled ? __primary_color : __primary_color_10)};
+  border-color: ${(props) =>
+    props.isFocus && !props.disabled ? __primary_color : __primary_color_10};
 
   &:focus-within::before {
     background-size: 100% 100%;
   }
 
   &::before {
-    display: ${(props) => (props.isFocus && !props.disabled ? "block" : "none")};
+    display: ${(props) =>
+      props.isFocus && !props.disabled ? "block" : "none"};
     position: absolute;
     content: "";
     height: 2px;
@@ -64,16 +75,21 @@ export const Answer = styled.input`
   border: none;
   outline: none;
   text-transform: uppercase;
+  background: transparent;
   position: relative;
   z-index: 1;
   font-size: 24px;
   font-weight: 700;
-  color: ${(props) => (props.disabled ? __primary_color_10 : __primary_color)};
+  color: ${(props) =>
+    props.isKey
+      ? __white_color
+      : props.disabled
+      ? __primary_color_10
+      : __primary_color};
   cursor: pointer;
 `;
 
-export const AnswersRowContainer = styled.div`
-`;
+export const AnswersRowContainer = styled.div``;
 
 export const RemoveButton = styled(Fab)`
   && {

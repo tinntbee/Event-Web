@@ -6,6 +6,7 @@ import GridDataCustom from "./GridDataCustom";
 import IconButton from "@mui/material/IconButton";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import AddIcon from "@mui/icons-material/Add";
+import ExtensionIcon from "@mui/icons-material/Extension";
 import "./style.scss";
 import EventBox from "../../components/EventBox";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
@@ -24,11 +25,13 @@ function HostFeature(props) {
   const [state, setState] = useState({ active: "myEvent" });
   const [data, setData] = useState();
   const handleModifyClick = (_id) => {
-    history.replace("/event-studio/" + _id);
+    history.push("/event-studio/" + _id);
   };
 
   const handleRemoveClick = (_id) => {};
-  const handleStopClick = (_id) => {};
+  const handleModifyMiniGameClick = (miniGameId) => {
+    history.push("/game-studio/" + miniGameId);
+  };
   const handleLinkClick = (_id) => {};
   const handleReportClick = (_id) => {};
   useEffect(() => {
@@ -37,7 +40,6 @@ function HostFeature(props) {
       .post(url, { search: search })
       .then((data) => {
         setData(data);
-        console.log({data});
       })
       .catch((e) => {
         console.log(e);
@@ -165,10 +167,10 @@ function HostFeature(props) {
                                 aria-label="delete"
                                 size="small"
                                 onClick={() => {
-                                  handleStopClick(item._id);
+                                  handleModifyMiniGameClick(item.minigameId);
                                 }}
                               >
-                                <DoDisturbIcon
+                                <ExtensionIcon
                                   sx={{ color: "#348b9c" }}
                                   fontSize="medium"
                                 />

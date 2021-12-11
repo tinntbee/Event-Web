@@ -73,7 +73,7 @@ function ButtonAnswer(props) {
       disabled={isDisabled}
       onClick={isDisabled ? handleAnswerBoxClick : undefined}
       isFocus={rowFocus === rowNumber}
-      isKey={columnKey === columnNumber}
+      isKey={columnKey == columnNumber}
     >
       <Answer
         type="text"
@@ -82,6 +82,7 @@ function ButtonAnswer(props) {
         value={currentQA.answers[columnNumber]}
         disabled={isDisabled}
         onClick={handleClick}
+        isKey={columnKey == columnNumber}
       />
       {!isDisabled && (
         <RemoveButton
