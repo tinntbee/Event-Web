@@ -18,6 +18,11 @@ export default function users(state = initialState, action) {
         ...state,
         user: undefined,
       };
+    case type.RE_LOGIN:
+      return {
+        ...state,
+        user: action.payload,
+      };
     default:
       return state;
   }

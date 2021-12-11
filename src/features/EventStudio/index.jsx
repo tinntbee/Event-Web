@@ -44,6 +44,7 @@ function EventStudio(props) {
     const { _id } = props.match.params;
     if (_id === "new") {
     } else {
+      setLoading(true);
       const url = "/event/detail/" + _id;
       axiosClient
         .get(url)
@@ -67,11 +68,16 @@ function EventStudio(props) {
               standee: { ...state.file.standee, url: data.standee },
             },
           });
-
-          console.log(state);
+          setLoading(false);
         })
         .catch((e) => {
-          console.log(e);
+          setLoading(false);
+          dispatch(
+            snackBarActions.open({
+              message: "Có lỗi sảy ra :(",
+              variant: "error",
+            })
+          );
         });
     }
   }, []);
@@ -104,10 +110,10 @@ function EventStudio(props) {
           history.push("/game-studio/" + data.minigameId);
         })
         .catch((e) => {
-          console.log(e);
+          setLoading(false);
           dispatch(
             snackBarActions.open({
-              message: "Something lỗi",
+              message: "Có lỗi sảy ra :(",
               variant: "error",
             })
           );
@@ -127,7 +133,13 @@ function EventStudio(props) {
           history.push("/game-studio/" + data.minigameId);
         })
         .catch((e) => {
-          console.log(e);
+          setLoading(false);
+          dispatch(
+            snackBarActions.open({
+              message: "Có lỗi sảy ra :(",
+              variant: "error",
+            })
+          );
         });
     }
   };
@@ -152,6 +164,7 @@ function EventStudio(props) {
           setStateParent={setState}
           state={state}
           fetchPostAPI={fetchPostAPI}
+          setLoading={setLoading}
         />
         <EventViewDemo state={state} />
       </div>

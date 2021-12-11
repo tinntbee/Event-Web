@@ -11,7 +11,7 @@ import axiosClient from "../../../api/axiosClient";
 EventEditor.propTypes = {};
 
 function EventEditor(props) {
-  const { state, setStateParent, fetchPostAPI } = props;
+  const { state, setStateParent, fetchPostAPI, setLoading } = props;
   const submitFormRef = useRef();
   const [part, setPart] = useState(0);
   const handleNextClick = () => {
@@ -57,6 +57,7 @@ function EventEditor(props) {
   }, []);
 
   const handleSubmit = async () => {
+    setLoading(true);
     let background = undefined;
     let standee = undefined;
     if (state.data.name) {
@@ -90,7 +91,7 @@ function EventEditor(props) {
       if (!standee) {
         standee = state.data.standee;
       }
-
+      setLoading(false);
       await fetchPostAPI(background, standee);
     }
   };

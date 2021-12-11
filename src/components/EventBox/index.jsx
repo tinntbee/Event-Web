@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 import "./style.scss";
+import axiosClient from "../../api/axiosClient";
 
 EventBox.propTypes = {};
 
 function EventBox(props) {
-  const { data } = props;
+  const history = useHistory();
+  const user = useSelector((state) => state.users.user);
+  const [data, setData] = useState(props.data);
   let statusString = "";
   const statusParse = () => {
     const timeBegin = Date.parse(data.timeBegin);
@@ -25,6 +30,19 @@ function EventBox(props) {
     }
   };
   statusParse();
+
+  const handleUnSubscribe = async () => {
+    const url = "event/unRegisterEvent/" + data._id;
+    await axiosClient
+      .post(url)
+      .then((res) => setData({ ...data, isFavorites: res.isFavorites }));
+  };
+  const handleSubscribe = async () => {
+    const url = "event/registerEvent/" + data._id;
+    await axiosClient
+      .post(url)
+      .then((res) => setData({ ...data, isFavorites: res.isFavorites }));
+  };
   return (
     <>
       {data && (
@@ -36,16 +54,24 @@ function EventBox(props) {
             >
               <div
                 className="avatar_host"
-                style={{ backgroundImage: `url(${data.avatarHost})` }}
+                style={{ backgroundImage: `url(${data.host.avatar})` }}
               />
             </div>
           </div>
           <div className="event-box__information">
-            <h3 className="title">{data.name}</h3>
+            <h3
+              className="title"
+              onClick={() => {
+                history.push("/event/" + data._id);
+              }}
+            >
+              {data.name}
+            </h3>
             <p className="description">{data.description}</p>
             <div className="detail">
               <p>
-                <span className="black">Host: </span> {data.nameHost}
+                <span className="black">Host: </span>{" "}
+                {data.host.nickname ? data.host.nickname : data.host.fullName}
               </p>
               <p>
                 <span className="black">Status: </span>
@@ -80,7 +106,15 @@ function EventBox(props) {
                 </div>
               </div>
             </div>
-            <button className="button error">Unsubscribe</button>
+            {user && data.isFavorites ? (
+              <button className="button error" onClick={handleUnSubscribe}>
+                Hủy đăng kí
+              </button>
+            ) : (
+              <button className="button primary" onClick={handleSubscribe}>
+                Đăng kí
+              </button>
+            )}
           </div>
         </div>
       )}

@@ -21,3 +21,4 @@ export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
 export const SNACK_BAR_OPEN = "SNACK_BAR_OPEN";
 export const SNACK_BAR_CLOSE = "SNACK_BAR_CLOSE";
+export const RE_LOGIN = "RE_LOGIN";

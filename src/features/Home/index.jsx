@@ -48,10 +48,7 @@ function Home(props) {
             return (
               <div
                 key={index}
-                className="home__body__event-box"
-                onClick={() => {
-                  history.push("/event/" + item._id);
-                }}
+                className="home__body__event-box"                
               >
                 <EventBox data={item} />
               </div>

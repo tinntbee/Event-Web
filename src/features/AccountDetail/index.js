@@ -48,8 +48,7 @@ function AccountDetail(props) {
   const classes = useStyles();
   const yesterday = new Date(Date.now() - 86400000);
   const [state, setState] = useState({
-    avatar:
-      "https://firebasestorage.googleapis.com/v0/b/myevents-finalproject.appspot.com/o/images%2F25780c863cb1c8ef91a0.jpg?alt=media&token=51c300f4-f947-41d3-96d5-440ef2303fd0",
+    avatar: "",
     avatarFile: null,
     account: {
       nickname: "",
@@ -66,7 +65,6 @@ function AccountDetail(props) {
   });
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
-  const INITIAL_FORM_STATE = { ...state.account };
   const FORM_VALIDATION = yup.object().shape({
     nickname: yup
       .string("Enter your nickname")
@@ -121,7 +119,7 @@ function AccountDetail(props) {
   ];
 
   const fetchUserInfo = async () => {
-    const data = await userAPI
+    await userAPI
       .getAccountInfo()
       .then((data) => {
         if (data) {
@@ -245,11 +243,6 @@ function AccountDetail(props) {
           <Link to="/account-detail/registered-event">
             <li>
               <button>Registered Events</button>
-            </li>
-          </Link>
-          <Link to="/account-detail/host">
-            <li>
-              <button>Host</button>
             </li>
           </Link>
         </ul>

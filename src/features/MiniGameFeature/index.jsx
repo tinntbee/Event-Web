@@ -124,6 +124,7 @@ function MiniGameFeature(props) {
   let idEvent = "";
 
   const fetchDataMiniGame = async () => {
+    setLoading(true);
     const { _id } = props.match.params;
     const url = "/minigame/" + _id;
     await axiosClient.get(url).then((res) => {
@@ -158,8 +159,10 @@ function MiniGameFeature(props) {
         rowFocus: 0,
       });
     });
+    setLoading(false);
   };
   const fetchDataEvent = async () => {
+    setLoading(true);
     const url = "/event/detail/" + idEvent;
     axiosClient
       .get(url)
@@ -175,8 +178,11 @@ function MiniGameFeature(props) {
       .catch((e) => {
         console.log(e);
       });
+
+    setLoading(false);
   };
   const fetchDataPlayer = async () => {
+    setLoading(true);
     const { _id } = props.match.params;
     const url = "/minigame/player/" + _id;
     axiosClient
@@ -194,14 +200,24 @@ function MiniGameFeature(props) {
       .catch((e) => {
         console.log(e);
       });
+    setLoading(false);
+  };
+  const fetchTopPlayer = async () => {
+    setLoading(true);
+    const { _id } = props.match.params;
+    const url = "/minigame/getTop20Player/" + _id;
+    await axiosClient
+      .get(url)
+      .then((res) => setTopPlayerState(res))
+      .catch((e) => console.log({ e }));
+    setLoading(false);
   };
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
       await fetchDataMiniGame();
       await fetchDataEvent();
       await fetchDataPlayer();
-      setLoading(false);
+      await fetchTopPlayer();
     };
     fetchData();
   }, []);
@@ -276,62 +292,98 @@ function MiniGameFeature(props) {
                 <b>BẢN TỔNG SẮC</b>
               </p>
             </div>
-            <div className="body">
-              <div className="top3">
-                <div className="no2">
-                  <div
-                    className="avatar"
-                    style={{
-                      backgroundImage: `url(${miniGameData.player[1].avatar})`,
-                    }}
-                  />
-                  <p className="name">{miniGameData.player[1].name}</p>
-                  <p className="point">{miniGameData.player[1].point}</p>
+            {topPlayerState && (
+              <div className="body">
+                <div className="top3">
+                  <div className="no2">
+                    <div
+                      className="avatar"
+                      style={{
+                        backgroundImage: `url(${
+                          topPlayerState[1] && topPlayerState[1].user.avatar
+                        })`,
+                      }}
+                    />
+                    <p className="name">
+                      {topPlayerState[1]
+                        ? topPlayerState[1].user.nickname
+                          ? topPlayerState[1].user.nickname
+                          : topPlayerState[1].user.fullName
+                        : "-"}
+                    </p>
+                    <p className="point">
+                      {topPlayerState[1] ? topPlayerState[1].point : "-"}
+                    </p>
+                  </div>
+                  <div className="no1">
+                    <div
+                      className="avatar"
+                      style={{
+                        backgroundImage: `url(${
+                          topPlayerState[0] && topPlayerState[0].user.avatar
+                        })`,
+                      }}
+                    />
+                    <p className="name">
+                      {topPlayerState[0]
+                        ? topPlayerState[0].user.nickname
+                          ? topPlayerState[0].user.nickname
+                          : topPlayerState[0].user.fullName
+                        : "-"}
+                    </p>
+                    <p className="point">
+                      {topPlayerState[0] ? topPlayerState[0].point : "-"}
+                    </p>
+                  </div>
+                  <div className="no3">
+                    <div
+                      className="avatar"
+                      style={{
+                        backgroundImage: `url(${
+                          topPlayerState[2] && topPlayerState[2].user.avatar
+                        })`,
+                      }}
+                    />
+                    <p className="name">
+                      {topPlayerState[2]
+                        ? topPlayerState[2].user.nickname
+                          ? topPlayerState[2].user.nickname
+                          : topPlayerState[2].user.fullName
+                        : "-"}
+                    </p>
+                    <p className="point">
+                      {topPlayerState[2] ? topPlayerState[2].point : "-"}
+                    </p>
+                  </div>
                 </div>
-                <div className="no1">
-                  <div
-                    className="avatar"
-                    style={{
-                      backgroundImage: `url(${miniGameData.player[0].avatar})`,
-                    }}
-                  />
-                  <p className="name">{miniGameData.player[0].name}</p>
-                  <p className="point">{miniGameData.player[0].point}</p>
-                </div>
-                <div className="no3">
-                  <div
-                    className="avatar"
-                    style={{
-                      backgroundImage: `url(${miniGameData.player[2].avatar})`,
-                    }}
-                  />
-                  <p className="name">{miniGameData.player[2].name}</p>
-                  <p className="point">{miniGameData.player[2].point}</p>
+                <div className="player">
+                  {topPlayerState &&
+                    topPlayerState.map((item, index) => {
+                      if (index > 2) {
+                        return (
+                          <div
+                            key={index}
+                            className={classNames({
+                              row: true,
+                              highline: index % 2 !== 0,
+                              me: item.user._id === _idUser,
+                            })}
+                          >
+                            <p className="stt">{index + 1 + "th"}</p>
+                            <p className="name">
+                              {item.user.nickname
+                                ? item.user.nickname
+                                : item.user.fullName}
+                            </p>
+                            <p className="point">{item.point}</p>
+                          </div>
+                        );
+                      }
+                      return <></>;
+                    })}
                 </div>
               </div>
-              <div className="player">
-                {miniGameData &&
-                  miniGameData.player.map((item, index) => {
-                    if (index > 2) {
-                      return (
-                        <div
-                          key={index}
-                          className={classNames({
-                            row: true,
-                            highline: index % 2 !== 0,
-                            me: item._id === _idUser,
-                          })}
-                        >
-                          <p className="stt">{index + 1 + "th"}</p>
-                          <p className="name">{item.name}</p>
-                          <p className="point">{item.point}</p>
-                        </div>
-                      );
-                    }
-                    return <></>;
-                  })}
-              </div>
-            </div>
+            )}
           </div>
           <FacebookProvider appId="1463441184039187">
             <Page

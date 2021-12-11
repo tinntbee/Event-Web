@@ -124,7 +124,6 @@
     }
 
     & > button {
-      visibility: hidden;
       position: absolute;
       left: 10px;
       bottom: 0;
@@ -139,6 +138,18 @@
 
       &:hover {
         background: var(--error-color);
+        color: var(--white-color);
+      }
+    }
+
+    & > button.primary {
+      color: var(--primary-color-blue);
+      font-weight: 700;
+      padding: 5px 8px;
+      border: 1px solid var(--primary-color-blue);
+
+      &:hover {
+        background: var(--primary-color-blue);
         color: var(--white-color);
       }
     }

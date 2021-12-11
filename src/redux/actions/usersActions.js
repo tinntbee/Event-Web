@@ -13,4 +13,10 @@ export const userAction = {
       payload: payload,
     };
   },
+  ReLogin: (payload) => {
+    return {
+      type: type.RE_LOGIN,
+      payload: payload,
+    };
+  },
 };
