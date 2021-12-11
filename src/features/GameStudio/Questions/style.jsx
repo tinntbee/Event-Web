@@ -73,7 +73,7 @@ export const CustomButton = styled(Button)`
 
 export const AddButton = styled(CustomButton)`
   && {
-    background-image: url("icons/add_circle_outline.svg");
+    background-image: url("../../../icons/add_circle_outline.svg");
     background-position: center;
     background-repeat: no-repeat;
     height: 30px;
@@ -82,7 +82,7 @@ export const AddButton = styled(CustomButton)`
 
 export const MoveUpButton = styled(AddButton)`
   && {
-    background-image: url("icons/ic_arrow_upward_18_fill.svg");
+    background-image: url("../../../icons/ic_arrow_upward_18_fill.svg");
     box-sizing: border-box;
     max-width: 34px;
     max-height: 34px;
@@ -93,19 +93,19 @@ export const MoveUpButton = styled(AddButton)`
 
 export const MoveDownButton = styled(MoveUpButton)`
   && {
-    background-image: url("icons/ic_arrow_downward_18_fill.svg");
+    background-image: url("../../../icons/ic_arrow_downward_18_fill.svg");
   }
 `;
 
 export const AddNewUpButton = styled(MoveUpButton)`
   && {
-    background-image: url("icons/ic_add_circle_outline_18_fill.svg");
+    background-image: url("../../../icons/ic_add_circle_outline_18_fill.svg");
   }
 `;
 
 export const RemoveButton = styled(MoveUpButton)`
   && {
-    background-image: url("icons/ic_remove_circle_outline_18_fill.svg");
+    background-image: url("../../../icons/ic_remove_circle_outline_18_fill.svg");
   }
 `;
 

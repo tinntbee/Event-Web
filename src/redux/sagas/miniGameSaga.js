@@ -1,4 +1,6 @@
 import { call, put, takeLatest, delay } from "redux-saga/effects";
+import { miniGameAPI } from "../../api/miniGameAPI";
+import { answersRaw } from "../../utils/miniGame";
 const apiUrl = "blabla";
 
 const miniGameDefault = {
@@ -10,48 +12,6 @@ const miniGameDefault = {
       aBegin: 1,
       aEnd: 5,
       answers: ["", "H", "E", "L", "L", "0", "", ""],
-    },
-    {
-      questionContent: "something",
-      questionImageUrl: "url",
-      aBegin: 1,
-      aEnd: 4,
-      answers: ["", "", "", "", "", "", "", ""],
-    },
-    {
-      questionContent: "something",
-      questionImageUrl: "url",
-      aBegin: 1,
-      aEnd: 4,
-      answers: ["", "", "", "", "", "", "", ""],
-    },
-    {
-      questionContent: "something",
-      questionImageUrl: "url",
-      aBegin: 1,
-      aEnd: 4,
-      answers: ["", "", "", "", "", "", "", ""],
-    },
-    {
-      questionContent: "something",
-      questionImageUrl: "url",
-      aBegin: 1,
-      aEnd: 4,
-      answers: ["", "", "", "", "", "", "", ""],
-    },
-    {
-      questionContent: "something",
-      questionImageUrl: "url",
-      aBegin: 1,
-      aEnd: 4,
-      answers: ["", "", "", "", "", "", "", ""],
-    },
-    {
-      questionContent: "something",
-      questionImageUrl: "url",
-      aBegin: 1,
-      aEnd: 4,
-      answers: ["", "", "", "", "", "", "", ""],
     },
   ],
   columnKey: 0,
@@ -65,8 +25,32 @@ function getApi() {
 
 function* fetchMiniGame(action) {
   try {
-    const miniGame = yield call(getApi);
-    yield delay(1000);
+    const data = yield miniGameAPI.getMiniGame(action.payload);
+    const listQA = [];
+
+    if (data.listQA) {
+      data.listQA.forEach((element) => {
+        listQA.push({
+          questionContent: element.questionContent,
+          questionImageUrl: element.questionImageUrl,
+          aBegin: element.aBegin,
+          aEnd: element.aEnd,
+          answers: answersRaw(
+            element.aBegin,
+            element.aEnd,
+            element.answer,
+            data.gridColumn
+          ),
+        });
+      });
+    }
+    const miniGame = {
+      _id: data._id,
+      grid: { rows: data.gridRow, columns: data.gridColumn },
+      listQA: listQA,
+      columnKey: data.columnKey,
+      rowFocus: listQA.length > 0 ? 0 : -1,
+    };
     yield put({ type: "GET_MINIGAME_SUCCESS", miniGame: miniGame });
   } catch (e) {
     yield put({ type: "GET_MINIGAME_FAILED", message: e.message });

@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
+import { userAPI } from "../../api/userAPI";
+import { homeActions } from "../../redux/actions/homeActions";
+import { snackBarActions } from "../../redux/actions/snackBarActions";
 import { userAction } from "../../redux/actions/usersActions";
 import "./style.scss";
 
@@ -15,7 +18,7 @@ function NavBar(props) {
   const history = useHistory();
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
-      alert(event.target.value);
+      dispatch(homeActions.getEvents({ search: event.target.value }));
       history.push("/home");
     }
   };
@@ -40,18 +43,46 @@ function NavBar(props) {
   };
 
   history.listen(function (location) {
-    setLocationActive(location.pathname);
+    setLocationActive(window.location.pathname);
   });
 
   useEffect(() => {
     setLocationActive(window.location.pathname);
-    if (user) {
-    } else {
-      const getUser = localStorage.getItem("user");
-      if (getUser) {
-        dispatch(userAction.Login(JSON.parse(getUser)));
+    const fetchAccountInfo = async () => {
+      if (user) {
+      } else {
+        await userAPI
+          .getAccountInfo()
+          .then((data) => {
+            if (data) {
+              dispatch(
+                userAction.Login({
+                  nickname: data.nickname,
+                  fullName: data.fullName,
+                  gender: data.gender,
+                  university: data.university,
+                  faculty: data.faculty,
+                  studentClass: data.studentClass,
+                  email: data.email,
+                  phone: data.phone,
+                  dob: data.dob.substring(0, 10),
+                  avatar: data.avatar,
+                })
+              );
+            }
+          })
+          .catch((e) => {
+            dispatch(
+              snackBarActions.open({
+                message: "Bạn chưa đăng nhập đó ^^!",
+                variant: "error",
+              })
+            );
+            dispatch(userAction.Logout());
+          });
       }
-    }
+    };
+    fetchAccountInfo();
   }, []);
 
   const handleLogout = () => {
@@ -73,17 +104,21 @@ function NavBar(props) {
           >
             Trang chủ
           </Link>
-          <Link
-            to="/host"
-            className={classNames({
-              active: state.active === "host",
-            })}
-          >
-            Tổ chức sự kiện
-          </Link>
+          {user && (
+            <Link
+              to="/host"
+              className={classNames({
+                active: state.active === "host",
+              })}
+            >
+              Tổ chức sự kiện
+            </Link>
+          )}
           {user ? (
             <>
-              <Link onClick={handleLogout}>Đăng xuất</Link>
+              <Link to="#" onClick={handleLogout}>
+                Đăng xuất
+              </Link>
               <Link to="/account-detail">
                 <div
                   className="avatar"

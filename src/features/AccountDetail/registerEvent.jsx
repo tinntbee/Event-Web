@@ -1,13 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import "./style.scss";
 import EventBox from "../../components/EventBox";
 import ListEventsHorizontal from "../../components/ListEventsHorizontal";
+import axiosClient from "../../api/axiosClient";
 
 RegisteredEvent.propTypes = {};
 
 function RegisteredEvent(props) {
+  const [data, setData] = useState();
+  const fetchData = async () => {
+    const url = "/event/getRegisteredEvents/";
+    await axiosClient
+      .get(url)
+      .then((res) => {
+        setData(res);
+        console.log({ res });
+      })
+      .catch((e) => {
+        console.log({ e });
+      });
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <div className="registered-event Account-detail">
       <div className="Sidebar">
@@ -23,11 +40,6 @@ function RegisteredEvent(props) {
               <button>Registered Events</button>
             </li>
           </Link>
-          <Link to="/account-detail/host">
-            <li>
-              <button>Host</button>
-            </li>
-          </Link>
         </ul>
       </div>
       <div className="Container">
@@ -35,7 +47,7 @@ function RegisteredEvent(props) {
           <h3 className="Title">Registered Events</h3>
         </div>
         <div className="Container__body">
-          <ListEventsHorizontal />
+          <ListEventsHorizontal data={data} />
         </div>
         <div className="Container__footer"></div>
       </div>

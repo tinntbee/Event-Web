@@ -12,6 +12,7 @@
     & > .thumbnail {
       width: 250px;
       height: 387px;
+      background: var(--base-color-gray);
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
@@ -43,6 +44,7 @@
         width: 80px;
         height: 80px;
         border-radius: 50%;
+        background: var(--base-color-gray);
         background-position: center;
         background-repeat: no-repeat;
         border: 4px solid var(--white-color);
@@ -122,7 +124,6 @@
     }
 
     & > button {
-      visibility: hidden;
       position: absolute;
       left: 10px;
       bottom: 0;
@@ -137,6 +138,18 @@
 
       &:hover {
         background: var(--error-color);
+        color: var(--white-color);
+      }
+    }
+
+    & > button.primary {
+      color: var(--primary-color-blue);
+      font-weight: 700;
+      padding: 5px 8px;
+      border: 1px solid var(--primary-color-blue);
+
+      &:hover {
+        background: var(--primary-color-blue);
         color: var(--white-color);
       }
     }

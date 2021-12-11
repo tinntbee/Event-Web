@@ -6,9 +6,11 @@ import { storage } from "../../services/firebase";
 import InputField from "./Components/InputField";
 import SelectField from "./Components/SelectField";
 import "./style.scss";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { userAPI } from "../../api/userAPI";
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import { useDispatch } from "react-redux";
+import { snackBarActions } from "../../redux/actions/snackBarActions";
+import { userAction } from "../../redux/actions/usersActions";
 
 AccountDetail.propTypes = {};
 
@@ -41,11 +43,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function AccountDetail(props) {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const classes = useStyles();
   const yesterday = new Date(Date.now() - 86400000);
   const [state, setState] = useState({
-    avatar:
-      "https://firebasestorage.googleapis.com/v0/b/myevents-finalproject.appspot.com/o/images%2F25780c863cb1c8ef91a0.jpg?alt=media&token=51c300f4-f947-41d3-96d5-440ef2303fd0",
+    avatar: "",
     avatarFile: null,
     account: {
       nickname: "",
@@ -62,7 +65,6 @@ function AccountDetail(props) {
   });
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
-  const INITIAL_FORM_STATE = { ...state.account };
   const FORM_VALIDATION = yup.object().shape({
     nickname: yup
       .string("Enter your nickname")
@@ -117,35 +119,67 @@ function AccountDetail(props) {
   ];
 
   const fetchUserInfo = async () => {
-    const data = await userAPI.getAccountInfo();
-    if (data) {
-      console.log(data);
-      setState({
-        ...state,
-        avatar: data.avatar,
-        account: {
-          nickname: data.nickname,
-          fullName: data.fullName,
-          gender: data.gender,
-          university: data.university,
-          faculty: data.faculty,
-          studentClass: data.studentClass,
-          email: data.email,
-          phone: data.phone,
-          dob: data.dob.substring(0, 10),
-          avatar: data.avatar,
-        },
+    await userAPI
+      .getAccountInfo()
+      .then((data) => {
+        if (data) {
+          setState({
+            ...state,
+            avatar: data.avatar,
+            account: {
+              nickname: data.nickname,
+              fullName: data.fullName,
+              gender: data.gender,
+              university: data.university,
+              faculty: data.faculty,
+              studentClass: data.studentClass,
+              email: data.email,
+              phone: data.phone,
+              dob: data.dob.substring(0, 10),
+              avatar: data.avatar,
+            },
+          });
+        }
+      })
+      .catch((e) => {
+        dispatch(
+          snackBarActions.open({
+            message: "Bạn cần phải đăng nhập!",
+            variant: "error",
+          })
+        );
+        dispatch(userAction.Logout());
+        history.push("/login");
       });
-    }
   };
 
   const formik = useFormik({
     initialValues: state.account,
     validationSchema: FORM_VALIDATION,
     enableReinitialize: true,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-      const data = userAPI.updateAccountInfo(values);
+    onSubmit: async (values) => {
+      const data = await userAPI
+        .updateAccountInfo(values)
+        .then((data) => {
+          if (data) {
+            dispatch(
+              snackBarActions.open({
+                message: "Đã lưu các thay đổi",
+                variant: "success",
+              })
+            );
+          }
+        })
+        .catch((e) => {
+          dispatch(
+            snackBarActions.open({
+              message: "Bạn cần phải đăng nhập!",
+              variant: "error",
+            })
+          );
+          dispatch(userAction.Logout());
+          history.push("/login");
+        });
     },
   });
 
@@ -189,11 +223,7 @@ function AccountDetail(props) {
     }
   };
 
-  const { enqueueSnackbar } = useSnackbar();
-  const handleClickVariant = (variant) => () => {
-    // variant could be success, error, warning, info, or default
-    enqueueSnackbar('This is a success message!', { variant });
-  };
+  const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
     fetchUserInfo();
@@ -213,11 +243,6 @@ function AccountDetail(props) {
           <Link to="/account-detail/registered-event">
             <li>
               <button>Registered Events</button>
-            </li>
-          </Link>
-          <Link to="/account-detail/host">
-            <li>
-              <button>Host</button>
             </li>
           </Link>
         </ul>

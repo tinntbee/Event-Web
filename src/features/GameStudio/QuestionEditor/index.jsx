@@ -17,6 +17,7 @@ import {
 QuestionEditor.propTypes = {};
 
 function QuestionEditor(props) {
+  const _id = useSelector((state) => state.miniGame.miniGame._id);
   const rowFocus = useSelector((state) => state.miniGame.miniGame.rowFocus);
   const dispatch = useDispatch();
   const contentQA = useSelector(
@@ -24,9 +25,11 @@ function QuestionEditor(props) {
   );
   const handleOnChange = (e) => {
     const acceptedImageTypes = ["image/gif", "image/jpeg", "image/png"];
+    const pathname = `imageQuestions/${_id}/`;
+    const filename = `${Date.now()}`;
     if (acceptedImageTypes.includes(e.target.files[0].type)) {
       const uploadTask = storage
-        .ref(`imageQuestions/demo_question_${rowFocus}`)
+        .ref(pathname + filename)
         .put(e.target.files[0]);
       uploadTask.on(
         "state_changed",
@@ -36,8 +39,8 @@ function QuestionEditor(props) {
         },
         () => {
           storage
-            .ref("imageQuestions")
-            .child(`demo_question_${rowFocus}`)
+            .ref(pathname)
+            .child(filename)
             .getDownloadURL()
             .then((url) => {
               dispatch(changeQuestionImageUrl(url));

@@ -1,11 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 import "./style.scss";
+import axiosClient from "../../api/axiosClient";
 
 EventBox.propTypes = {};
 
 function EventBox(props) {
-  const { data } = props;
+  const history = useHistory();
+  const user = useSelector((state) => state.users.user);
+  const [data, setData] = useState(props.data);
+  let statusString = "";
+  const statusParse = () => {
+    const timeBegin = Date.parse(data.timeBegin);
+    const timeEnd = Date.parse(data.timeEnd);
+    const timeNow = Date.now();
+    if (timeBegin > timeNow) {
+      statusString = "Sắp diễn ra";
+      return;
+    }
+    if (timeEnd < timeNow) {
+      statusString = "Đã diễn ra";
+      return;
+    }
+    if (timeBegin <= timeNow && timeNow <= timeEnd) {
+      statusString = "Đang diễn ra";
+      return;
+    }
+  };
+  statusParse();
+
+  const handleUnSubscribe = async () => {
+    const url = "event/unRegisterEvent/" + data._id;
+    await axiosClient
+      .post(url)
+      .then((res) => setData({ ...data, isFavorites: res.isFavorites }));
+  };
+  const handleSubscribe = async () => {
+    const url = "event/registerEvent/" + data._id;
+    await axiosClient
+      .post(url)
+      .then((res) => setData({ ...data, isFavorites: res.isFavorites }));
+  };
   return (
     <>
       {data && (
@@ -13,34 +50,50 @@ function EventBox(props) {
           <div className="event-box__thumbnail">
             <div
               className="thumbnail"
-              style={{ backgroundImage: `url(${data.thumbnail})` }}
+              style={{ backgroundImage: `url(${data.standee})` }}
             >
               <div
                 className="avatar_host"
-                style={{ backgroundImage: `url(${data.avatarHost})` }}
+                style={{ backgroundImage: `url(${data.host.avatar})` }}
               />
             </div>
           </div>
           <div className="event-box__information">
-            <h3 className="title">{data.title}</h3>
+            <h3
+              className="title"
+              onClick={() => {
+                history.push("/event/" + data._id);
+              }}
+            >
+              {data.name}
+            </h3>
             <p className="description">{data.description}</p>
             <div className="detail">
               <p>
-                <span className="black">Host: </span> {data.host}
+                <span className="black">Host: </span>{" "}
+                {data.host.nickname ? data.host.nickname : data.host.fullName}
               </p>
               <p>
                 <span className="black">Status: </span>
-                {data.status}
+                {statusString}
               </p>
               <p>
                 <span className="black">Times: </span>
-                {data.time}
+                {data.timeBegin
+                  .substring(0, 16)
+                  .replaceAll("-", "/")
+                  .replaceAll("T", " ") +
+                  " - " +
+                  data.timeEnd
+                    .substring(0, 16)
+                    .replaceAll("-", "/")
+                    .replaceAll("T", " ")}
               </p>
               <p>
                 <span>Subscriber: </span>
               </p>
               <div className="subscribers">
-                {data.subscribers.map((item, index) => {
+                {data.favorites.map((item, index) => {
                   return (
                     <div
                       key={index}
@@ -49,11 +102,19 @@ function EventBox(props) {
                   );
                 })}
                 <div className="total">
-                  <p>{data.totalSubscriber - 4}+</p>
+                  <p>{data.favorites.length - 4}+</p>
                 </div>
               </div>
             </div>
-            <button className="button error">Unsubscribe</button>
+            {user && data.isFavorites ? (
+              <button className="button error" onClick={handleUnSubscribe}>
+                Hủy đăng kí
+              </button>
+            ) : (
+              <button className="button primary" onClick={handleSubscribe}>
+                Đăng kí
+              </button>
+            )}
           </div>
         </div>
       )}

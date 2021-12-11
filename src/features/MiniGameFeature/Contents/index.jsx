@@ -20,7 +20,7 @@ function Contents(props) {
         </div>
         <div
           className="image"
-          style={{ backgroundImage: `url(${listQA[rowFocus].questionImage})` }}
+          style={{ backgroundImage: `url(${listQA[rowFocus].questionImageUrl})` }}
         />
       </div>
     </div>

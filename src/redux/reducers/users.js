@@ -12,9 +12,16 @@ export default function users(state = initialState, action) {
         user: action.payload,
       };
     case type.LOGOUT:
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
       return {
         ...state,
         user: undefined,
+      };
+    case type.RE_LOGIN:
+      return {
+        ...state,
+        user: action.payload,
       };
     default:
       return state;

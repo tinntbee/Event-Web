@@ -64,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function PartDescription(props) {
+  const { state, setStateParent, submitFormRef, handleNextClick } = props;
   const yesterday = new Date(Date.now());
 
   function formatDate(date) {
@@ -74,104 +75,8 @@ function PartDescription(props) {
     );
   }
   const classes = useStyles();
-  const config = {
-    attribution: false,
-    placeholder: "Start typing...",
-    toolbarButtons: {
-      moreText: {
-        buttons: [
-          "bold",
-          "italic",
-          "underline",
-          "strikeThrough",
-          "subscript",
-          "superscript",
-          "fontFamily",
-          "fontSize",
-          "textColor",
-          "backgroundColor",
-          "inlineClass",
-          "inlineStyle",
-          "clearFormatting",
-        ],
-      },
-      moreParagraph: {
-        buttons: [
-          "alignLeft",
-          "alignCenter",
-          "formatOLSimple",
-          "alignRight",
-          "alignJustify",
-          "formatOL",
-          "formatUL",
-          "paragraphFormat",
-          "paragraphStyle",
-          "lineHeight",
-          "outdent",
-          "indent",
-          "quote",
-        ],
-      },
-      moreRich: {
-        buttons: [
-          "insertTable",
-          "emoticons",
-          "insertLink",
-          "insertImage",
-          "insertVideo",
-          "fontAwesome",
-          "specialCharacters",
-          "embedly",
-          "insertFile",
-          "insertHR",
-        ],
-        buttonsVisible: 2,
-      },
-      moreMisc: {
-        buttons: [
-          "undo",
-          "redo",
-          "fullscreen",
-          "print",
-          "spellChecker",
-          "selectAll",
-          "html",
-          "help",
-        ],
-        align: "right",
-        buttonsVisible: 0,
-      },
-    },
-    pluginsEnabled: [
-      "table",
-      "spell",
-      "quote",
-      "save",
-      "quickInsert",
-      "paragraphFormat",
-      "paragraphStyle",
-      "help",
-      "draggable",
-      "align",
-      "link",
-      "lists",
-      "file",
-      "image",
-      "emoticons",
-      "url",
-      "embedly",
-      "colors",
-      "entities",
-      "inlineClass",
-      "inlineStyle",
-      // 'codeBeautif '
-      // 'spellChecker',
-      "imageTUI",
-    ],
-  };
 
-  const [state, setState] = useState({
-    model: "chi tiết sự kiện",
+  const [link, setLink] = useState({
     nameGroup: "",
     nameEvent: "",
     more: "",
@@ -185,22 +90,22 @@ function PartDescription(props) {
   });
 
   const handleModelChange = (model) => {
-    setState({ ...state, model: model.toString() });
+    setStateParent({ ...state, data: { ...state.data, description: model } });
+    formik.values.description = model;
   };
 
   const INITIAL_FORM_STATE = {
     participant: "HCMUTE",
-    dayBegin: "2021-10-24T10:30",
-    dayEnd: "2021-10-24T10:30",
-    link: "",
-    description: "",
+    dayBegin: state.data.dayBegin,
+    dayEnd: state.data.dayEnd,
+    link: state.data.link,
+    description: state.data.description,
   };
 
   const FORM_VALIDATION = yup.object().shape({
     participant: yup.string().required(),
     dayBegin: yup
       .date()
-      .min(yesterday, `Sự kiện phải được bắt đầu trong tương lai`)
       .required(),
     dayEnd: yup
       .date()
@@ -218,7 +123,7 @@ function PartDescription(props) {
     initialValues: INITIAL_FORM_STATE,
     validationSchema: FORM_VALIDATION,
     onSubmit: (values) => {
-      props.handleFormSubmit(values);
+      handleNextClick();
     },
   });
 
@@ -243,26 +148,24 @@ function PartDescription(props) {
   };
 
   const handleNameGroupOnChange = (e) => {
-    setState({ ...state, nameGroup: e.target.value.replace(" ", "") });
+    setLink({ ...link, nameGroup: e.target.value.replace(" ", "") });
   };
   const handleNameEventOnChange = (e) => {
-    setState({ ...state, nameEvent: e.target.value.replace(" ", "") });
+    setLink({ ...link, nameEvent: e.target.value.replace(" ", "") });
   };
   const handleMoreOnChange = (e) => {
-    setState({ ...state, more: e.target.value.replace(" ", "") });
+    setLink({ ...link, more: e.target.value.replace(" ", "") });
   };
 
   useEffect(() => {
     formik.values.link =
       "http://myevent/e/" +
-      state.nameEvent +
+      link.nameEvent +
       "." +
-      state.nameGroup +
+      link.nameGroup +
       "." +
-      state.more;
-    formik.values.description = state.model;
-    props.handleUpdateDescription(state.model);
-  }, [state]);
+      link.more;
+  }, [link]);
 
   return (
     <div className="part part-description">
@@ -271,8 +174,7 @@ function PartDescription(props) {
         <FroalaEditor
           className="editor"
           tag="textarea"
-          config={config}
-          model={state.model}
+          model={state.data.description}
           onModelChange={handleModelChange}
         />
       </div>
@@ -332,11 +234,11 @@ function PartDescription(props) {
                   fullWidth
                   value={
                     "http://myevent/e/" +
-                    state.nameGroup +
+                    link.nameGroup +
                     "." +
-                    state.nameEvent +
+                    link.nameEvent +
                     "." +
-                    state.more
+                    link.more
                   }
                   type="text"
                   disabled
@@ -353,7 +255,7 @@ function PartDescription(props) {
                   size="small"
                   fullWidth
                   label="name-group"
-                  value={state.nameGroup}
+                  value={link.nameGroup}
                   type="text"
                   onChange={handleNameGroupOnChange}
                 />
@@ -365,7 +267,7 @@ function PartDescription(props) {
                   fullWidth
                   label="name-event"
                   type="text"
-                  value={state.nameEvent}
+                  value={link.nameEvent}
                   onChange={handleNameEventOnChange}
                 />
               </Grid>
@@ -375,13 +277,13 @@ function PartDescription(props) {
                   size="small"
                   fullWidth
                   label="more"
-                  value={state.more}
+                  value={link.more}
                   type="text"
                   onChange={handleMoreOnChange}
                 />
               </Grid>
             </Grid>
-            <button ref={props.submitFormRef}>submut</button>
+            <button ref={submitFormRef}>submut</button>
           </form>
         </FormikProvider>
       </div>

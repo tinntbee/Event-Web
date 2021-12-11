@@ -1,0 +1,78 @@
+.myevents-list{
+    height: 100%;
+    min-width: 1450px;
+    width: 1450px;
+    display: flex;
+    flex-direction: row;
+}
+
+.myevents-list h4{
+    font-weight: 600;
+}
+
+.myevents-list .Sidebar{
+    background: var(--base-color-gray);
+    width: 230px;
+    min-width: 230px;
+    padding-right: 20px;
+}
+
+.myevents-list .Container{
+    flex-grow: 1;
+    height: fit-content;
+    background: var(--white-color);
+    box-shadow: 0px 3px 6px var(--box-shadow-gray);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.myevents-list .Sidebar .Title{
+    margin-bottom: 10px;
+}
+
+.myevents-list .Sidebar ul li{
+    cursor: pointer;
+}
+
+.myevents-list .Sidebar ul li button{
+    padding: 10px 15px;
+    border-radius: 30px;
+    width: fit-content;
+    color: "#FFF";
+    margin: 0;
+}
+
+.myevents-list .Sidebar ul li.active button{
+    background: var(--primary-color-blue);
+    color: var(--white-color);
+    font-weight: 600;
+}
+
+.myevents-list .Sidebar ul li button:hover{
+    filter: brightness(90%);
+}
+
+.main-body .myevents-header {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.main-body .myevents-body{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.main-body .myevents-body .event-box {
+    background: var(--white-color);
+      border-radius: 10px;
+      margin: 10px;
+      padding: 5px;
+      box-shadow: 0px 3px 6px var(--text-disabled-color-gray);
+}

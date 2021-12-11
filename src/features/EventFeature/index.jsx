@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FacebookProvider, Page } from "react-facebook";
 import FroalaEditorView from "react-froala-wysiwyg/FroalaEditorView";
 import { useHistory } from "react-router-dom";
+import axiosClient from "../../api/axiosClient";
 import "./style.scss";
 
 EventFeature.propTypes = {};
 
 function EventFeature(props) {
   const history = useHistory();
-  const data = {
+  const [data, setData] = useState({
     _id: "",
     background: "",
     standee: "",
@@ -17,7 +18,7 @@ function EventFeature(props) {
     dayEnd: "",
     description: "",
     _idMiniGame: "1",
-  };
+  });
   const miniGameData = {
     player: [
       { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
@@ -35,6 +36,46 @@ function EventFeature(props) {
   const handlePlayNowClick = () => {
     history.push("/mini-game/" + data._idMiniGame);
   };
+  useEffect(() => {
+    const { _id } = props.match.params;
+    if (_id === "new") {
+    } else {
+      const url = "/event/detail/" + _id;
+      axiosClient
+        .get(url)
+        .then((data) => {
+          console.log({ data });
+          setData({
+            ...data,
+            _id: data._id,
+            name: data.name,
+            background: data.background,
+            standee: data.standee,
+            dayBegin: data.timeBegin.substring(0, 16),
+            dayEnd: data.timeEnd.substring(0, 16),
+            description: data.description,
+            linkFanpage: data.link,
+            isFavorites: data.isFavorites,
+            _idMiniGame: data.minigameId,
+          });
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }, []);
+  const handleUnRegister = async () => {
+    const url = "event/unRegisterEvent/" + data._id;
+    await axiosClient
+      .post(url)
+      .then((res) => setData({ ...data, isFavorites: res.isFavorites }));
+  };
+  const handleRegister = async () => {
+    const url = "event/registerEvent/" + data._id;
+    await axiosClient
+      .post(url)
+      .then((res) => setData({ ...data, isFavorites: res.isFavorites }));
+  };
   return (
     <div className="event">
       <div className="event__title">
@@ -48,7 +89,11 @@ function EventFeature(props) {
           />
           <div className="name">
             <p>{data && data.name}</p>
-            <button>Register</button>
+            {data.isFavorites ? (
+              <button onClick={handleUnRegister}>Hủy đăng kí</button>
+            ) : (
+              <button onClick={handleRegister}>Đăng kí</button>
+            )}
           </div>
           <div className="information">
             <p>Đang diễn ra</p>
@@ -75,7 +120,11 @@ function EventFeature(props) {
             <Page
               width="456px"
               height="709px"
-              href="https://www.facebook.com/DoanHoiITUTE"
+              href={
+                data.linkFanpage
+                  ? data.linkFanpage
+                  : "https://www.facebook.com/DoanHoiITUTE"
+              }
               tabs="timeline"
             />
           </FacebookProvider>

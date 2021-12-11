@@ -3,7 +3,10 @@ import PropTypes from "prop-types";
 import { Header } from "./style";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { changeColumnKey, modifyGridColumns } from "../../../redux/actions/miniGame";
+import {
+  changeColumnKey,
+  modifyGridColumns,
+} from "../../../redux/actions/miniGame";
 
 HeaderContainer.propTypes = {};
 
@@ -15,7 +18,7 @@ function HeaderContainer(props) {
     dispatch(modifyGridColumns({ columns: e.target.value }));
   };
   const handleKeyChange = (e) => {
-    dispatch(changeColumnKey(e.target))
+    dispatch(changeColumnKey(e.target.value));
   };
   return (
     <Header>
@@ -32,8 +35,8 @@ function HeaderContainer(props) {
       <p>| Key: </p>
       <input
         type="number"
-        min="1"
-        max="15"
+        min="0"
+        max={grid.columns - 1}
         value={columnKey}
         onChange={handleKeyChange}
       />
