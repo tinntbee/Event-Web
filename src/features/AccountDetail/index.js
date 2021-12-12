@@ -11,6 +11,7 @@ import { userAPI } from "../../api/userAPI";
 import { useDispatch } from "react-redux";
 import { snackBarActions } from "../../redux/actions/snackBarActions";
 import { userAction } from "../../redux/actions/usersActions";
+import { filesService } from "../../services/firebase/filesService";
 
 AccountDetail.propTypes = {};
 
@@ -127,6 +128,7 @@ function AccountDetail(props) {
             ...state,
             avatar: data.avatar,
             account: {
+              _id: data._id,
               nickname: data.nickname,
               fullName: data.fullName,
               gender: data.gender,
@@ -195,31 +197,27 @@ function AccountDetail(props) {
     }
   };
 
-  const saveFile = () => {
+  const saveFile = async () => {
     if (state.avatarFile) {
-      const uploadTask = storage
-        .ref(`images/${state.avatarFile.name}`)
-        .put(state.avatarFile);
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {},
-        (error) => {
-          console.log(error);
-        },
-        () => {
-          storage
-            .ref("images")
-            .child(state.avatarFile.name)
-            .getDownloadURL()
-            .then((url) => {
-              setState({
-                ...state,
-                avatarFile: null,
-                avatar: url.toString(),
-              });
-            });
-        }
+      const pathname = "/avatars/";
+      const filename = state.account._id + "_" + Date.now();
+      // filesService.uploadFile(pathname, filename, state.avatarFile, (url) => {
+      //   setState({
+      //     ...state,
+      //     avatarFile: null,
+      //     avatar: url.toString(),
+      //   });
+      // });
+      const url = await filesService.uploadTaskPromise(
+        pathname + filename,
+        state.avatarFile
       );
+      setState({
+        ...state,
+        avatar: url,
+        avatarFile: undefined,
+        account: { ...state.account, avatar: url },
+      });
     }
   };
 

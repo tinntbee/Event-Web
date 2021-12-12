@@ -18,11 +18,11 @@ export function answersRaw(aBegin, aEnd, answer, gridColumn) {
   return answers;
 }
 
-export function answerParse(answers) {
+export function answerParse(answers, aBegin, aEnd) {
   let answer = "";
-  answers.forEach((element) => {
-    answer = answer + element;
-  });
+  for (let index = aBegin; index <= aEnd; index++) {
+    answer = answer + answers[index];
+  }
   return answer;
 }
 
@@ -32,7 +32,7 @@ export function answerSetParse(listQA) {
     let i = 0;
     answers.push({
       number: i++,
-      answer: answerParse(element.answers),
+      answer: answerParse(element.answers, element.aBegin, element.aEnd),
     });
   });
   return answers;

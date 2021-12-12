@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import dialog from "./dialog";
 import home from "./home";
 import miniGame from "./miniGame";
 import snackBar from "./snackBar";
@@ -9,6 +10,7 @@ const rootReducer = combineReducers({
   miniGame: miniGame,
   home: home,
   snackBar: snackBar,
+  dialog: dialog,
 });
 
 export default rootReducer;

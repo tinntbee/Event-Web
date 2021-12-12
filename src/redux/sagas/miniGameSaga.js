@@ -46,6 +46,7 @@ function* fetchMiniGame(action) {
     }
     const miniGame = {
       _id: data._id,
+      idEvent: data.idEvent,
       grid: { rows: data.gridRow, columns: data.gridColumn },
       listQA: listQA,
       columnKey: data.columnKey,

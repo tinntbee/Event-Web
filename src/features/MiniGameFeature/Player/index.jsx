@@ -6,7 +6,14 @@ import axiosClient from "../../../api/axiosClient";
 Player.propTypes = {};
 
 function Player(props) {
-  const { data, state, setStateParent, setLoading, setPlayerState } = props;
+  const {
+    data,
+    state,
+    setStateParent,
+    setLoading,
+    setPlayerState,
+    fetchTopPlayer,
+  } = props;
   const handleSubmitClick = async () => {
     setLoading(true);
     const req = {
@@ -22,6 +29,7 @@ function Player(props) {
       .then((res) => {
         setLoading(false);
         setPlayerState({ ...data, rank: res.rank, score: res.score });
+        fetchTopPlayer();
       })
       .catch((error) => {
         setLoading(false);

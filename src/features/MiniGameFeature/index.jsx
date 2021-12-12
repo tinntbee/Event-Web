@@ -78,30 +78,6 @@ function MiniGameFeature(props) {
     ],
     columnKey: 4,
   });
-  const miniGameData = {
-    player: [
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "2", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-    ],
-  };
   const _idUser = "2";
   const [state, setState] = useState({ ...data, rowFocus: 0 });
   const [eventState, setEventState] = useState({
@@ -284,6 +260,7 @@ function MiniGameFeature(props) {
           data={playerState}
           setLoading={setLoading}
           setPlayerState={setPlayerState}
+          fetchTopPlayer={fetchTopPlayer}
         />
         <div className="event-detail">
           <div className="top-player">

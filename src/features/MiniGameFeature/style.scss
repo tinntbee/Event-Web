@@ -145,7 +145,7 @@
               & > .avatar {
                 border-radius: 50%;
                 background-position: center;
-                background-size: cover;
+                background-size: cover!important;
                 background-repeat: no-repeat;
                 background: var(--primary-color-blue);
                 margin-bottom: 5px;
