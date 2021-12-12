@@ -16,12 +16,25 @@ import HostFeature from "./features/HostFeature";
 import NavBar from "./components/NavBar";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Slide from "@mui/material/Slide";
+
 import { useDispatch, useSelector } from "react-redux";
 import { snackBarActions } from "./redux/actions/snackBarActions";
-import MyEventsFeature from "./features/MyEvents";
+import { dialogActions } from "./redux/actions/dialogActions";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
 });
 
 function App() {
@@ -31,8 +44,12 @@ function App() {
     if (reason === "clickaway") {
       return;
     }
-
     dispatch(snackBarActions.close());
+  };
+
+  const dialog = useSelector((state) => state.dialog);
+  const handleDialogClose = () => {
+    dispatch(dialogActions.close());
   };
   return (
     <div className="App">
@@ -67,7 +84,6 @@ function App() {
           <Route path="/memberlist" component={MemberListFeature} exact />
           <Route path="/minigamelist" component={MiniGameFeature} exact />
           <Route path="/host" component={HostFeature} exact />
-          <Route path="/myevent" component={MyEventsFeature} exact />
         </Switch>
       </div>
       <Snackbar
@@ -84,6 +100,36 @@ function App() {
           {snackBar.message}
         </Alert>
       </Snackbar>
+      <Dialog
+        open={dialog.open}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleDialogClose}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{dialog.title}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            {dialog.content}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          {dialog.callbacks &&
+            dialog.callbacks.map((item, index) => {
+              return (
+                <Button
+                  key={index}
+                  onClick={() => {
+                    handleDialogClose();
+                    item.callback();
+                  }}
+                >
+                  {item.content}
+                </Button>
+              );
+            })}
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

@@ -11,32 +11,52 @@ Home.propTypes = {};
 function Home(props) {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { search, status, faculty, page, size, events } = useSelector(
-    (state) => state.home
-  );
+  //search, status, faculty, page, size, events
+  const [home, setHome] = useState(useSelector((state) => state.home));
   const [data, setData] = useState();
   useEffect(() => {
     const url = "/event/search";
+    const { search, status, faculty, page, size, events } = home;
     axiosClient
-      .post(url, { search, status, faculty, page, size })
-      .then((data) => {
-        setData(data.events);
-        console.log({ data });
-        dispatch(homeActions.getEvents(data));
+      .post(url, { search, status, faculty, page: 1, size })
+      .then((res) => {
+        setData(res.events);
+        dispatch(homeActions.getEvents(res));
+        setHome({ ...home, limit: res.limit });
       })
       .catch((e) => console.log(e));
-  }, [search]);
+  }, [home.search, home.status, home.faculty]);
+  const facultyOnChange = (e) => {
+    setHome({ ...home, faculty: e.target.value });
+  };
+  const statusOnChange = (e) => {
+    setHome({ ...home, status: e.target.value });
+  };
+  const loadMoreClick = async () => {
+    if (data.length < home.limit) {
+      const url = "/event/search";
+      const { search, status, faculty, page, size, events } = home;
+      axiosClient
+        .post(url, { search, status, faculty, page: page + 1, size })
+        .then((res) => {
+          setData([...data, ...res.events]);
+          dispatch(homeActions.getEvents([...data, ...res.events]));
+          setHome({ ...home, limit: res.limit, page: res.page });
+        })
+        .catch((e) => console.log(e));
+    }
+  };
   return (
     <div className="home">
       <div className="home__header">
         <p>Kết quả tìm kiếm</p>
         <div className="actions">
-          <select className="status">
-            <option value="all">Tất cả</option>
-            <option value="up-coming">Sắp diễn ra</option>
-            <option value="on-going">Đang diễn ra</option>
+          <select className="status" onChange={statusOnChange}>
+            <option value="-1">Tất cả</option>
+            <option value="1">Sắp diễn ra</option>
+            <option value="2">Đang diễn ra</option>
           </select>
-          <select className="faculty">
+          <select className="faculty" onChange={facultyOnChange}>
             <option value="all">Tất cả</option>
             <option value="FIT">FIT</option>
           </select>
@@ -46,16 +66,17 @@ function Home(props) {
         {data &&
           data.map((item, index) => {
             return (
-              <div
-                key={index}
-                className="home__body__event-box"                
-              >
+              <div key={index} className="home__body__event-box">
                 <EventBox data={item} />
               </div>
             );
           })}
       </div>
-      <button className="more">Xem thêm</button>
+      {data && data.length < home.limit && (
+        <button className="more" onClick={loadMoreClick}>
+          Xem thêm
+        </button>
+      )}
     </div>
   );
 }

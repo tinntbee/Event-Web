@@ -49,7 +49,7 @@ function ButtonAnswer(props) {
   const handleRemoveClick = () => {
     let newABegin = currentQA.aBegin;
     let newAEnd = currentQA.aEnd;
-    if (columnNumber <= grid.columns / 2) {
+    if (columnNumber <= (currentQA.aBegin + currentQA.aEnd) / 2) {
       newABegin = columnNumber + 1;
     } else {
       newAEnd = columnNumber - 1;

@@ -30,9 +30,21 @@ function GameStudio(props) {
   const grid = useSelector((state) => state.grid);
   const state = useSelector((state) => state.miniGame.miniGame);
   const rowFocus = useSelector((state) => state.rowFocus);
+  const [eventState, setEventState] = useState({
+    _id: "",
+    name: "",
+    timeBegin: "-",
+    timeEnd: "-",
+    link: "",
+  });
   useEffect(() => {
     dispatch(getMiniGame(_id));
   }, []);
+  useEffect(() => {
+    if (state.idEvent) {
+      fetchDataEvent();
+    }
+  }, [state]);
 
   const handleSave = async () => {
     setLoading(true);
@@ -54,6 +66,26 @@ function GameStudio(props) {
       })
     );
   };
+  const fetchDataEvent = async () => {
+    setLoading(true);
+    const url = "/event/detail/" + state.idEvent;
+    axiosClient
+      .get(url)
+      .then((data) => {
+        setEventState({
+          _id: data._id,
+          name: data.name,
+          timeBegin: data.timeBegin,
+          timeEnd: data.timeEnd,
+          link: data.link,
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+
+    setLoading(false);
+  };
 
   return (
     <Container>
@@ -69,11 +101,22 @@ function GameStudio(props) {
       </Title>
       <Header>
         <div>
-          <h1>MINIGAME: TALKSHOW CLOUD COMPUTING</h1>
+          <h1>MINIGAME: {eventState.name.toUpperCase()}</h1>
           <Description>
             <span>Đang diễn ra</span>
             <div />
-            <span>22/11 - 12/12/2021</span>
+            <span>
+              {eventState &&
+                eventState.timeBegin
+                  .substr(0, 16)
+                  .replaceAll("-", "/")
+                  .replaceAll("T", " ") +
+                  " - " +
+                  eventState.timeEnd
+                    .substr(0, 16)
+                    .replaceAll("-", "/")
+                    .replaceAll("T", " ")}
+            </span>
             <div />
             <span>
               Sinh viên Khoa Công nghệ Thông tin - Đại học Sư phạm Kỹ thuật

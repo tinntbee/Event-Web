@@ -64,11 +64,7 @@ function EventEditor(props) {
       if (state.file.background.file) {
         //upload background
         background = await uploadTaskPromise(
-          `events/backgrounds/${
-            state.data.name +
-            "." +
-            state.file.background.file.name.split(".").pop()
-          }`,
+          `events/backgrounds/${state.data.name + "." + Date.now()}`,
           state.file.background.file
         );
       }
@@ -76,11 +72,7 @@ function EventEditor(props) {
       if (state.file.standee.file) {
         //upload standee
         standee = await uploadTaskPromise(
-          `events/standees/${
-            state.data.name +
-            "." +
-            state.file.standee.file.name.split(".").pop()
-          }`,
+          `events/standees/${state.data.name + "." + Date.now()}`,
           state.file.standee.file
         );
       }

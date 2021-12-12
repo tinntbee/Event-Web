@@ -67,7 +67,10 @@ function EventBox(props) {
             >
               {data.name}
             </h3>
-            <p className="description">{data.description}</p>
+            <div
+              className="description"
+              dangerouslySetInnerHTML={{ __html: data.description }}
+            />
             <div className="detail">
               <p>
                 <span className="black">Host: </span>{" "}
@@ -93,7 +96,7 @@ function EventBox(props) {
                 <span>Subscriber: </span>
               </p>
               <div className="subscribers">
-                {data.favorites.map((item, index) => {
+                {data.favorites.slice(0, 4).map((item, index) => {
                   return (
                     <div
                       key={index}
@@ -101,20 +104,24 @@ function EventBox(props) {
                     ></div>
                   );
                 })}
-                <div className="total">
-                  <p>{data.favorites.length - 4}+</p>
-                </div>
+                {data.favorites.length > 4 && (
+                  <div className="total">
+                    <p>{data.favorites.length - 4}+</p>
+                  </div>
+                )}
               </div>
             </div>
-            {user && data.isFavorites ? (
-              <button className="button error" onClick={handleUnSubscribe}>
-                Hủy đăng kí
-              </button>
-            ) : (
-              <button className="button primary" onClick={handleSubscribe}>
-                Đăng kí
-              </button>
-            )}
+            {user &&
+              data.isFavorites &&
+              (data.isFavorites ? (
+                <button className="button error" onClick={handleUnSubscribe}>
+                  Hủy đăng kí
+                </button>
+              ) : (
+                <button className="button primary" onClick={handleSubscribe}>
+                  Đăng kí
+                </button>
+              ))}
           </div>
         </div>
       )}

@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { FacebookProvider, Page } from "react-facebook";
 import FroalaEditorView from "react-froala-wysiwyg/FroalaEditorView";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import classNames from "classnames";
 import axiosClient from "../../api/axiosClient";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 import "./style.scss";
 
 EventFeature.propTypes = {};
 
 function EventFeature(props) {
   const history = useHistory();
+  const user = useSelector((state) => state.users.user);
   const [data, setData] = useState({
     _id: "",
     background: "",
@@ -19,29 +24,26 @@ function EventFeature(props) {
     description: "",
     _idMiniGame: "1",
   });
-  const miniGameData = {
-    player: [
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-      { _id: "", name: "Nguyen Tin", avatar: "", point: 2000 },
-    ],
+  const [loading, setLoading] = useState(false);
+  const [topPlayerState, setTopPlayerState] = useState();
+  const fetchTopPlayer = async (minigameId) => {
+    setLoading(true);
+    const url = "/minigame/getTop10Player/" + minigameId;
+    await axiosClient
+      .get(url)
+      .then((res) => setTopPlayerState(res))
+      .catch((e) => console.log({ e }));
+    setLoading(false);
   };
   const handlePlayNowClick = () => {
     history.push("/mini-game/" + data._idMiniGame);
   };
-  useEffect(() => {
+  const fetchData = async () => {
     const { _id } = props.match.params;
     if (_id === "new") {
     } else {
       const url = "/event/detail/" + _id;
-      axiosClient
+      await axiosClient
         .get(url)
         .then((data) => {
           console.log({ data });
@@ -58,11 +60,16 @@ function EventFeature(props) {
             isFavorites: data.isFavorites,
             _idMiniGame: data.minigameId,
           });
+
+          fetchTopPlayer(data.minigameId);
         })
         .catch((e) => {
           console.log(e);
         });
     }
+  };
+  useEffect(() => {
+    fetchData();
   }, []);
   const handleUnRegister = async () => {
     const url = "event/unRegisterEvent/" + data._id;
@@ -78,6 +85,12 @@ function EventFeature(props) {
   };
   return (
     <div className="event">
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <div className="event__title">
         <p>EVENT DETAIL</p>
       </div>
@@ -89,11 +102,12 @@ function EventFeature(props) {
           />
           <div className="name">
             <p>{data && data.name}</p>
-            {data.isFavorites ? (
-              <button onClick={handleUnRegister}>Hủy đăng kí</button>
-            ) : (
-              <button onClick={handleRegister}>Đăng kí</button>
-            )}
+            {user &&
+              (data.isFavorites ? (
+                <button onClick={handleUnRegister}>Hủy đăng kí</button>
+              ) : (
+                <button onClick={handleRegister}>Đăng kí</button>
+              ))}
           </div>
           <div className="information">
             <p>Đang diễn ra</p>
@@ -116,6 +130,107 @@ function EventFeature(props) {
             className="standee"
             style={{ backgroundImage: `url(${data && data.standee})` }}
           />
+          <div className="mini-game">
+            <div className="header">
+              <p>MINIGAME</p>
+              {user ? (
+                <button onClick={handlePlayNowClick}>Chơi ngay</button>
+              ) : (
+                <p>Cần phải đăng nhập để chơi</p>
+              )}
+            </div>
+            {topPlayerState && (
+              <div className="content">
+                <div className="top3">
+                  <div className="no2">
+                    <div
+                      className="avatar"
+                      style={{
+                        backgroundImage: `url(${
+                          topPlayerState[1] && topPlayerState[1].user.avatar
+                        })`,
+                      }}
+                    />
+                    <p className="name">
+                      {topPlayerState[1]
+                        ? topPlayerState[1].user.nickname
+                          ? topPlayerState[1].user.nickname
+                          : topPlayerState[1].user.fullName
+                        : "-"}
+                    </p>
+                    <p className="point">
+                      {topPlayerState[1] ? topPlayerState[1].point : "-"}
+                    </p>
+                  </div>
+                  <div className="no1">
+                    <div
+                      className="avatar"
+                      style={{
+                        backgroundImage: `url(${
+                          topPlayerState[0] && topPlayerState[0].user.avatar
+                        })`,
+                      }}
+                    />
+                    <p className="name">
+                      {topPlayerState[0]
+                        ? topPlayerState[0].user.nickname
+                          ? topPlayerState[0].user.nickname
+                          : topPlayerState[0].user.fullName
+                        : "-"}
+                    </p>
+                    <p className="point">
+                      {topPlayerState[0] ? topPlayerState[0].point : "-"}
+                    </p>
+                  </div>
+                  <div className="no3">
+                    <div
+                      className="avatar"
+                      style={{
+                        backgroundImage: `url(${
+                          topPlayerState[2] && topPlayerState[2].user.avatar
+                        })`,
+                      }}
+                    />
+                    <p className="name">
+                      {topPlayerState[2]
+                        ? topPlayerState[2].user.nickname
+                          ? topPlayerState[2].user.nickname
+                          : topPlayerState[2].user.fullName
+                        : "-"}
+                    </p>
+                    <p className="point">
+                      {topPlayerState[2] ? topPlayerState[2].point : "-"}
+                    </p>
+                  </div>
+                </div>
+                <div className="player">
+                  {topPlayerState &&
+                    topPlayerState.map((item, index) => {
+                      if (index > 2) {
+                        return (
+                          <div
+                            key={index}
+                            className={classNames({
+                              row: true,
+                              highline: index % 2 !== 0,
+                            })}
+                          >
+                            <p className="stt">{index + 1 + "th"}</p>
+                            <p className="name">
+                              {item.user.nickname
+                                ? item.user.nickname
+                                : item.user.fullName}
+                            </p>
+                            <p className="point">{item.point}</p>
+                          </div>
+                        );
+                      }
+                      return <></>;
+                    })}
+                </div>
+              </div>
+            )}
+          </div>
           <FacebookProvider appId="1463441184039187">
             <Page
               width="456px"
@@ -128,64 +243,6 @@ function EventFeature(props) {
               tabs="timeline"
             />
           </FacebookProvider>
-          <div className="mini-game">
-            <div className="header">
-              <p>MINIGAME</p>
-              <button onClick={handlePlayNowClick}>Chơi ngay</button>
-            </div>
-            <div className="content">
-              <div className="top3">
-                <div className="no2">
-                  <div
-                    className="avatar"
-                    style={{
-                      backgroundImage: `url(${miniGameData.player[1].avatar})`,
-                    }}
-                  />
-                  <p className="name">{miniGameData.player[1].name}</p>
-                  <p className="point">{miniGameData.player[1].point}</p>
-                </div>
-                <div className="no1">
-                  <div
-                    className="avatar"
-                    style={{
-                      backgroundImage: `url(${miniGameData.player[0].avatar})`,
-                    }}
-                  />
-                  <p className="name">{miniGameData.player[0].name}</p>
-                  <p className="point">{miniGameData.player[0].point}</p>
-                </div>
-                <div className="no3">
-                  <div
-                    className="avatar"
-                    style={{
-                      backgroundImage: `url(${miniGameData.player[2].avatar})`,
-                    }}
-                  />
-                  <p className="name">{miniGameData.player[2].name}</p>
-                  <p className="point">{miniGameData.player[2].point}</p>
-                </div>
-              </div>
-              <div className="player">
-                {miniGameData &&
-                  miniGameData.player.map((item, index) => {
-                    if (index > 2) {
-                      return (
-                        <div
-                          key={index}
-                          className={index % 2 !== 0 ? "row highline" : "row"}
-                        >
-                          <p className="stt">{index + 1 + "th"}</p>
-                          <p className="name">{item.name}</p>
-                          <p className="point">{item.point}</p>
-                        </div>
-                      );
-                    }
-                    return <></>;
-                  })}
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
