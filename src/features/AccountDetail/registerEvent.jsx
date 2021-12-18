@@ -10,15 +10,19 @@ RegisteredEvent.propTypes = {};
 
 function RegisteredEvent(props) {
   const [data, setData] = useState();
+  const [loading, setLoading] = useState(false);
   const fetchData = async () => {
+    setLoading(true);
     const url = "/event/getRegisteredEvents/";
     await axiosClient
       .get(url)
       .then((res) => {
         setData(res);
         console.log({ res });
+        setLoading(false);
       })
       .catch((e) => {
+        setLoading(false);
         console.log({ e });
       });
   };
@@ -47,7 +51,7 @@ function RegisteredEvent(props) {
           <h3 className="Title">Registered Events</h3>
         </div>
         <div className="Container__body">
-          <ListEventsHorizontal data={data} />
+          <ListEventsHorizontal loading={loading} data={data} />
         </div>
         <div className="Container__footer"></div>
       </div>

@@ -16,6 +16,7 @@ import faker from "faker";
 ChartCustom.propTypes = {};
 
 function ChartCustom(props) {
+  const { data } = props;
   ChartJS.register(
     LinearScale,
     CategoryScale,
@@ -26,17 +27,9 @@ function ChartCustom(props) {
     Tooltip
   );
 
-  const labels = [
-    "20/09/2021",
-    "21/09/2021",
-    "22/09/2021",
-    "23/09/2021",
-    "24/09/2021",
-    "25/09/2021",
-    "26/09/2021",
-  ];
+  const labels = data.displayedDate;
 
-  const data = {
+  const dataChart = {
     labels,
     datasets: [
       {
@@ -46,13 +39,13 @@ function ChartCustom(props) {
         backgroundColor: "rgb(255, 99, 132)",
         borderWidth: 2,
         fill: false,
-        data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+        data: data.totalFromFirstDay,
       },
       {
         type: "bar",
         label: "Người tham gia sự kiện mỗi ngày",
         backgroundColor: "#348b9c",
-        data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+        data: data.participantsPerDay,
         borderColor: "white",
         borderWidth: 2,
         barThickness: 50,
@@ -63,7 +56,7 @@ function ChartCustom(props) {
 
   return (
     <div className="chart-custom">
-      <Chart type="bar" data={data}/>;
+      <Chart type="bar" data={dataChart} />;
     </div>
   );
 }
