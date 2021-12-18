@@ -89,8 +89,8 @@ function EventStudio(props) {
       name: state.data.name,
       description: state.data.description,
       standee: standee,
-      beginTime: state.data.dayBegin + ":00.000Z",
-      endTime: state.data.dayEnd + ":00.000Z",
+      timeBegin: state.data.dayBegin + ":00.000Z",
+      timeEnd: state.data.dayEnd + ":00.000Z",
       fanpage: "https://www.facebook.com/gdsc.hcmute",
       background: background,
     };

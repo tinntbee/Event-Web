@@ -5,6 +5,7 @@ import EventBox from "../../components/EventBox";
 import "./style.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { homeActions } from "../../redux/actions/homeActions";
+import EventBoxLoading from "../../components/EventBox/EventBoxLoading";
 
 Home.propTypes = {};
 
@@ -12,9 +13,12 @@ function Home(props) {
   const history = useHistory();
   const dispatch = useDispatch();
   //search, status, faculty, page, size, events
-  const [home, setHome] = useState(useSelector((state) => state.home));
+  const homeRedux = useSelector((state) => state.home);
+  const [home, setHome] = useState(homeRedux);
   const [data, setData] = useState();
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
+    setLoading(true);
     const url = "/event/search";
     const { search, status, faculty, page, size, events } = home;
     axiosClient
@@ -23,8 +27,12 @@ function Home(props) {
         setData(res.events);
         dispatch(homeActions.getEvents(res));
         setHome({ ...home, limit: res.limit });
+        setLoading(false);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        setLoading(false);
+      });
   }, [home.search, home.status, home.faculty]);
   const facultyOnChange = (e) => {
     setHome({ ...home, faculty: e.target.value });
@@ -32,7 +40,11 @@ function Home(props) {
   const statusOnChange = (e) => {
     setHome({ ...home, status: e.target.value });
   };
+  useEffect(() => {
+    setHome(homeRedux);
+  }, [homeRedux]);
   const loadMoreClick = async () => {
+    setLoading(true);
     if (data.length < home.limit) {
       const url = "/event/search";
       const { search, status, faculty, page, size, events } = home;
@@ -42,8 +54,12 @@ function Home(props) {
           setData([...data, ...res.events]);
           dispatch(homeActions.getEvents([...data, ...res.events]));
           setHome({ ...home, limit: res.limit, page: res.page });
+          setLoading(false);
         })
-        .catch((e) => console.log(e));
+        .catch((e) => {
+          console.log(e);
+          setLoading(false);
+        });
     }
   };
   return (
@@ -63,14 +79,20 @@ function Home(props) {
         </div>
       </div>
       <div className="home__body">
-        {data &&
+        {loading ? (
+          <div className="home__body__event-box">
+            <EventBoxLoading />
+          </div>
+        ) : (
+          data &&
           data.map((item, index) => {
             return (
               <div key={index} className="home__body__event-box">
                 <EventBox data={item} />
               </div>
             );
-          })}
+          })
+        )}
       </div>
       {data && data.length < home.limit && (
         <button className="more" onClick={loadMoreClick}>

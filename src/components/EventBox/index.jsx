@@ -112,7 +112,7 @@ function EventBox(props) {
               </div>
             </div>
             {user &&
-              data.isFavorites &&
+              data.isFavorites != undefined &&
               (data.isFavorites ? (
                 <button className="button error" onClick={handleUnSubscribe}>
                   Hủy đăng kí
