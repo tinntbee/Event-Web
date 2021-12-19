@@ -61,6 +61,7 @@ function EventStudio(props) {
               dayBegin: data.timeBegin.substring(0, 16),
               dayEnd: data.timeEnd.substring(0, 16),
               description: data.description,
+              fanpage: data.link,
             },
             file: {
               ...state.file,
@@ -89,9 +90,9 @@ function EventStudio(props) {
       name: state.data.name,
       description: state.data.description,
       standee: standee,
-      timeBegin: state.data.dayBegin + ":00.000Z",
-      timeEnd: state.data.dayEnd + ":00.000Z",
-      fanpage: "https://www.facebook.com/gdsc.hcmute",
+      timeBegin: state.data.dayBegin + ":00.001Z",
+      timeEnd: state.data.dayEnd + ":00.001Z",
+      fanpage: state.data.fanpage,
       background: background,
     };
     console.log({ data });

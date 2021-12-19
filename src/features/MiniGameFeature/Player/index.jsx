@@ -2,10 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import { answerSetParse, getKey } from "../../../utils/miniGame";
 import axiosClient from "../../../api/axiosClient";
+import { snackBarActions } from "../../../redux/actions/snackBarActions";
+import { useDispatch } from "react-redux";
 
 Player.propTypes = {};
 
 function Player(props) {
+  const dispatch = useDispatch();
   const {
     data,
     state,
@@ -13,6 +16,7 @@ function Player(props) {
     setLoading,
     setPlayerState,
     fetchTopPlayer,
+    statusString,
   } = props;
   const handleSubmitClick = async () => {
     setLoading(true);
@@ -33,7 +37,14 @@ function Player(props) {
       })
       .catch((error) => {
         setLoading(false);
-        console.log({ error });
+        if (error.response.status == 430) {
+          dispatch(
+            snackBarActions.open({
+              message: "Quá hạn thời gian sự kiện :(",
+              variant: "error",
+            })
+          );
+        }
       });
   };
   return (
@@ -59,7 +70,11 @@ function Player(props) {
         </div>
       </div>
       <div className="actions">
-        {data.score != "-" ? (
+        {statusString === "Đã diễn ra" ? (
+          <p>Hết hạn nộp</p>
+        ) : statusString === "Sắp diễn ra" ? (
+          <p>Sự kiện chưa bắt đầu</p>
+        ) : data.score != "-" ? (
           <p>Bạn chỉ có thể tham gia 1 lần</p>
         ) : (
           <>

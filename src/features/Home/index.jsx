@@ -6,6 +6,7 @@ import "./style.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { homeActions } from "../../redux/actions/homeActions";
 import EventBoxLoading from "../../components/EventBox/EventBoxLoading";
+import { facultyOptions } from "../../utils/facultyList";
 
 Home.propTypes = {};
 
@@ -71,10 +72,17 @@ function Home(props) {
             <option value="-1">Tất cả</option>
             <option value="1">Sắp diễn ra</option>
             <option value="2">Đang diễn ra</option>
+            <option value="3">Đã diễn ra</option>
           </select>
           <select className="faculty" onChange={facultyOnChange}>
-            <option value="all">Tất cả</option>
-            <option value="FIT">FIT</option>
+            <option value={"all"}>Tất cả</option>
+            {facultyOptions.map((item, index) => {
+              return (
+                <option value={item.value} key={item.value}>
+                  {item.label}
+                </option>
+              );
+            })}
           </select>
         </div>
       </div>

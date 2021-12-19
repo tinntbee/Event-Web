@@ -99,6 +99,25 @@ function MiniGameFeature(props) {
   const [loading, setLoading] = useState(false);
   let idEvent = "";
 
+  const [statusString, setStatusString] = useState("");
+  const statusParse = () => {
+    const timeBegin = Date.parse(eventState.timeBegin);
+    const timeEnd = Date.parse(eventState.timeEnd);
+    const timeNow = Date.now();
+    if (timeBegin > timeNow) {
+      setStatusString("Sắp diễn ra");
+      return;
+    }
+    if (timeEnd < timeNow) {
+      setStatusString("Đã diễn ra");
+      return;
+    }
+    if (timeBegin <= timeNow && timeNow <= timeEnd) {
+      setStatusString("Đang diễn ra");
+      return;
+    }
+  };
+
   const fetchDataMiniGame = async () => {
     setLoading(true);
     const { _id } = props.match.params;
@@ -197,6 +216,9 @@ function MiniGameFeature(props) {
     };
     fetchData();
   }, []);
+  useEffect(() => {
+    statusParse();
+  }, [eventState]);
   return (
     <div className="mini-game">
       <Backdrop
@@ -209,7 +231,7 @@ function MiniGameFeature(props) {
         <div>
           <h1>MINIGAME: {eventState.name.toUpperCase()}</h1>
           <div className="information">
-            <span>Đang diễn ra</span>
+            <span>{statusString}</span>
             <div />
             <span>
               {eventState &&
@@ -261,6 +283,7 @@ function MiniGameFeature(props) {
           setLoading={setLoading}
           setPlayerState={setPlayerState}
           fetchTopPlayer={fetchTopPlayer}
+          statusString={statusString}
         />
         <div className="event-detail">
           <div className="top-player">
