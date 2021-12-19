@@ -11,23 +11,27 @@ function PartMiniGame(props) {
       <ScrollContainer className="scroll-horizontal-mini-game">
         <div
           className="mini-game-box active"
-          style={{ backgroundImage: 'url("images/minigame-ochu.jpg")' }}
+          style={{ backgroundImage: 'url("../../images/minigame-ochu.jpg")' }}
         />
         <div
           className="mini-game-box"
-          style={{ backgroundImage: 'url("images/minigame-ghep-hinh.jpg")' }}
+          style={{
+            backgroundImage: 'url("../../images/minigame-ghep-hinh.jpg")',
+          }}
         >
           <p>Chưa có sẳn để sử dụng</p>
         </div>
         <div
           className="mini-game-box"
-          style={{ backgroundImage: 'url("images/minigame-khac.jpg")' }}
+          style={{ backgroundImage: 'url("../../images/minigame-khac.jpg")' }}
         >
           <p>Chưa có sẳn để sử dụng</p>
         </div>
         <div
           className="mini-game-box"
-          style={{ backgroundImage: 'url("images/minigame-ghep-hinh.jpg")' }}
+          style={{
+            backgroundImage: 'url("../../images/minigame-ghep-hinh.jpg")',
+          }}
         >
           <p>Chưa có sẳn để sử dụng</p>
         </div>
