@@ -289,7 +289,7 @@ function MiniGameFeature(props) {
           <div className="top-player">
             <div className="header">
               <p>
-                <b>BẢN TỔNG SẮC</b>
+                <b>BẢNG TỔNG SẮP</b>
               </p>
             </div>
             {topPlayerState && (

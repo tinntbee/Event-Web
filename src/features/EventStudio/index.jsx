@@ -114,7 +114,7 @@ function EventStudio(props) {
           setLoading(false);
           dispatch(
             snackBarActions.open({
-              message: "Có lỗi sảy ra :(",
+              message: "Có lỗi xảy ra :(",
               variant: "error",
             })
           );
