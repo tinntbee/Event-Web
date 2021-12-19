@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { snackBarActions } from "../../redux/actions/snackBarActions";
 import { userAction } from "../../redux/actions/usersActions";
 import { filesService } from "../../services/firebase/filesService";
+import { facultyOptions } from "../../utils/facultyList";
 
 AccountDetail.propTypes = {};
 
@@ -93,30 +94,6 @@ function AccountDetail(props) {
   const genderOptions = [
     { value: "male", label: "Male" },
     { value: "female", label: "Female" },
-  ];
-  const universityOptions = [
-    {
-      value: "HCMUTE",
-      label: "HCMUTE",
-      facultyOptions: [
-        {
-          value: "FIT",
-          label: "Information Technology",
-          classOption: [
-            { value: "181101A", label: "181101A" },
-            { value: "181103B", label: "181103B" },
-          ],
-        },
-        {
-          value: "FIT2",
-          label: "Information Technology 2",
-          classOption: [
-            { value: "181101A2", label: "181101A2" },
-            { value: "181103B2", label: "181103B2" },
-          ],
-        },
-      ],
-    },
   ];
 
   const fetchUserInfo = async () => {
@@ -315,7 +292,9 @@ function AccountDetail(props) {
                       component={SelectField}
                       name="university"
                       label="University"
-                      options={universityOptions}
+                      options={[
+                        { value: "HCMUTE", label: "Đại học Sư phạm Kỹ thuật" },
+                      ]}
                     />
                   </Grid>
                   <Grid item xs={5} className={classes.field}>
@@ -323,17 +302,14 @@ function AccountDetail(props) {
                       component={SelectField}
                       name="faculty"
                       label="Faculty"
-                      options={universityOptions[0].facultyOptions}
+                      options={facultyOptions}
                     />
                   </Grid>
                   <Grid item xs={2} className={classes.field}>
                     <FastField
-                      component={SelectField}
+                      component={InputField}
                       name="studentClass"
                       label="Class"
-                      options={
-                        universityOptions[0].facultyOptions[0].classOption
-                      }
                     />
                   </Grid>
                   <Grid item xs={5} className={classes.field}>

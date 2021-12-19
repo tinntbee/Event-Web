@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import "./style.scss";
 import { FacebookProvider, Page } from "react-facebook";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Questions from "./Questions";
 import Answers from "./Answers";
 import Contents from "./Contents";
@@ -16,6 +16,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 MiniGameFeature.propTypes = {};
 
 function MiniGameFeature(props) {
+  const history = useHistory();
   const [data, setData] = useState({
     grid: { rows: 8, columns: 8 },
     listQA: [
@@ -99,42 +100,66 @@ function MiniGameFeature(props) {
   const [loading, setLoading] = useState(false);
   let idEvent = "";
 
+  const [statusString, setStatusString] = useState("");
+  const statusParse = () => {
+    const timeBegin = Date.parse(eventState.timeBegin);
+    const timeEnd = Date.parse(eventState.timeEnd);
+    const timeNow = Date.now();
+    if (timeBegin > timeNow) {
+      setStatusString("Sắp diễn ra");
+      return;
+    }
+    if (timeEnd < timeNow) {
+      setStatusString("Đã diễn ra");
+      return;
+    }
+    if (timeBegin <= timeNow && timeNow <= timeEnd) {
+      setStatusString("Đang diễn ra");
+      return;
+    }
+  };
+
   const fetchDataMiniGame = async () => {
     setLoading(true);
     const { _id } = props.match.params;
     const url = "/minigame/" + _id;
-    await axiosClient.get(url).then((res) => {
-      const listQA = [];
-      for (const qa of res.listQA) {
-        listQA.push({
-          questionContent: qa.questionContent,
-          questionImageUrl: qa.questionImageUrl,
-          aBegin: qa.aBegin,
-          aEnd: qa.aEnd,
-          answers: answerInitialization(res.gridColumn),
-        });
-      }
-      idEvent = res.idEvent;
-      setData({
-        _id: res._id,
-        idEvent: res.idEvent,
-        grid: { rows: res.gridRow, columns: res.gridColumn },
-        listQA: listQA,
-        columnKey: res.columnKey,
-        played: res.played,
-      });
-      setState({
-        ...{
+    await axiosClient
+      .get(url)
+      .then((res) => {
+        const listQA = [];
+        for (const qa of res.listQA) {
+          listQA.push({
+            questionContent: qa.questionContent,
+            questionImageUrl: qa.questionImageUrl,
+            aBegin: qa.aBegin,
+            aEnd: qa.aEnd,
+            answers: answerInitialization(res.gridColumn),
+          });
+        }
+        idEvent = res.idEvent;
+        setData({
           _id: res._id,
           idEvent: res.idEvent,
           grid: { rows: res.gridRow, columns: res.gridColumn },
           listQA: listQA,
-          played: res.played,
           columnKey: res.columnKey,
-        },
-        rowFocus: 0,
+          played: res.played,
+        });
+        setState({
+          ...{
+            _id: res._id,
+            idEvent: res.idEvent,
+            grid: { rows: res.gridRow, columns: res.gridColumn },
+            listQA: listQA,
+            played: res.played,
+            columnKey: res.columnKey,
+          },
+          rowFocus: 0,
+        });
+      })
+      .catch((error) => {
+        history.replace("/notfound");
       });
-    });
     setLoading(false);
   };
   const fetchDataEvent = async () => {
@@ -197,6 +222,9 @@ function MiniGameFeature(props) {
     };
     fetchData();
   }, []);
+  useEffect(() => {
+    statusParse();
+  }, [eventState]);
   return (
     <div className="mini-game">
       <Backdrop
@@ -209,7 +237,7 @@ function MiniGameFeature(props) {
         <div>
           <h1>MINIGAME: {eventState.name.toUpperCase()}</h1>
           <div className="information">
-            <span>Đang diễn ra</span>
+            <span>{statusString}</span>
             <div />
             <span>
               {eventState &&
@@ -261,12 +289,13 @@ function MiniGameFeature(props) {
           setLoading={setLoading}
           setPlayerState={setPlayerState}
           fetchTopPlayer={fetchTopPlayer}
+          statusString={statusString}
         />
         <div className="event-detail">
           <div className="top-player">
             <div className="header">
               <p>
-                <b>BẢN TỔNG SẮC</b>
+                <b>BẢNG TỔNG SẮP</b>
               </p>
             </div>
             {topPlayerState && (

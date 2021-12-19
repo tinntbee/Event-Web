@@ -26,7 +26,7 @@ function ButtonAnswer(props) {
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       .replace(/[đĐ]/g, "D")
-      .replace(/([^0-9a-z-\s])/g, "")
+      .replace(/([^0-9a-zA-Z-\s])/g, "")
       .replace(/(\s+)/g, "-")
       .replace(/-+/g, "-")
       .replace(/^-+|-+$/g, "");

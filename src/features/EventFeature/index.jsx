@@ -24,6 +24,24 @@ function EventFeature(props) {
     description: "",
     _idMiniGame: "1",
   });
+  const [statusString, setStatusString] = useState("");
+  const statusParse = () => {
+    const timeBegin = Date.parse(data.dayBegin);
+    const timeEnd = Date.parse(data.dayEnd);
+    const timeNow = Date.now();
+    if (timeBegin > timeNow) {
+      setStatusString("Sắp diễn ra");
+      return;
+    }
+    if (timeEnd < timeNow) {
+      setStatusString("Đã diễn ra");
+      return;
+    }
+    if (timeBegin <= timeNow && timeNow <= timeEnd) {
+      setStatusString("Đang diễn ra");
+      return;
+    }
+  };
   const [loading, setLoading] = useState(false);
   const [topPlayerState, setTopPlayerState] = useState();
   const fetchTopPlayer = async (minigameId) => {
@@ -65,12 +83,16 @@ function EventFeature(props) {
         })
         .catch((e) => {
           console.log(e);
+          history.replace("/notfound");
         });
     }
   };
   useEffect(() => {
     fetchData();
   }, []);
+  useEffect(() => {
+    statusParse();
+  }, [data]);
   const handleUnRegister = async () => {
     const url = "event/unRegisterEvent/" + data._id;
     await axiosClient
@@ -103,6 +125,7 @@ function EventFeature(props) {
           <div className="name">
             <p>{data && data.name}</p>
             {user &&
+              statusString !== "Đã diễn ra" &&
               (data.isFavorites ? (
                 <button onClick={handleUnRegister}>Hủy đăng kí</button>
               ) : (
@@ -110,7 +133,7 @@ function EventFeature(props) {
               ))}
           </div>
           <div className="information">
-            <p>Đang diễn ra</p>
+            <p>{statusString}</p>
             <div />
             <p>
               {data &&
@@ -134,7 +157,13 @@ function EventFeature(props) {
             <div className="header">
               <p>MINIGAME</p>
               {user ? (
-                <button onClick={handlePlayNowClick}>Chơi ngay</button>
+                statusString === "Sắp diễn ra" ? (
+                  <p>Sự kiện chưa diễn ra</p>
+                ) : statusString === "Đã diễn ra" ? (
+                  <button onClick={handlePlayNowClick}>Xem kết quả</button>
+                ) : (
+                  <button onClick={handlePlayNowClick}>Chơi ngay</button>
+                )
               ) : (
                 <p>Cần phải đăng nhập để chơi</p>
               )}

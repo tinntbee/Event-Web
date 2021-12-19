@@ -1,24 +1,22 @@
-import classNames from "classnames";
-import React, { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import ChartCustom from "./ChartCustom";
-import GridDataCustom from "./GridDataCustom";
-import IconButton from "@mui/material/IconButton";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import AddIcon from "@mui/icons-material/Add";
-import ExtensionIcon from "@mui/icons-material/Extension";
-import "./style.scss";
-import EventBox from "../../components/EventBox";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
-import DoDisturbIcon from "@mui/icons-material/DoDisturb";
-import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import BarChartIcon from "@mui/icons-material/BarChart";
-import axiosClient from "../../api/axiosClient";
-import { useDispatch } from "react-redux";
-import { snackBarActions } from "../../redux/actions/snackBarActions";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import ExtensionIcon from "@mui/icons-material/Extension";
+import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import IconButton from "@mui/material/IconButton";
+import classNames from "classnames";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
+import axiosClient from "../../api/axiosClient";
+import EventBox from "../../components/EventBox";
 import { dialogActions } from "../../redux/actions/dialogActions";
+import { snackBarActions } from "../../redux/actions/snackBarActions";
+import Report from "./Report";
+import "./style.scss";
 
 HostFeature.propTypes = {};
 
@@ -27,17 +25,12 @@ function HostFeature(props) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [state, setState] = useState({ active: "myEvent" });
-  const [reportState, setReportState] = useState({
-    chart: [],
-    players: [],
-    activeEventId: "",
-  });
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState();
+  const [eventActive, setEventActive] = useState();
   const handleModifyClick = (_id) => {
     history.push("/event-studio/" + _id);
   };
-
   const handleRemoveClick = (_id) => {
     const acceptRemove = async () => {
       setLoading(true);
@@ -72,15 +65,20 @@ function HostFeature(props) {
   };
   const handleReportClick = (_id) => {
     setState({ ...state, active: "report" });
+    setEventActive(_id);
   };
   const fetchMyEvent = async (_search) => {
+    setLoading(true);
     const url = "/event/myEvent";
     axiosClient
       .post(url, { search: _search })
       .then((res) => {
         setData(res);
+        setLoading(false);
+        setEventActive(res[0]?._id);
       })
       .catch((e) => {
+        setLoading(false);
         console.log(e);
       });
   };
@@ -102,7 +100,9 @@ function HostFeature(props) {
     document.body.removeChild(el);
   };
   const handleSearchOnChange = (e) => {
-    setSearch(e.target.value);
+    if (e.key == "Enter") {
+      setSearch(e.target.value);
+    }
   };
   return (
     <div className="host-feature">
@@ -118,18 +118,6 @@ function HostFeature(props) {
           <Link to="#">
             <li
               className={classNames({
-                active: state.active === "report",
-              })}
-              onClick={() => {
-                setState({ ...state, active: "report" });
-              }}
-            >
-              Báo cáo Sự kiện
-            </li>
-          </Link>
-          <Link to="#">
-            <li
-              className={classNames({
                 active: state.active === "myEvent",
               })}
               onClick={() => {
@@ -139,35 +127,23 @@ function HostFeature(props) {
               Sự kiện của tôi
             </li>
           </Link>
+          <Link to="#">
+            <li
+              className={classNames({
+                active: state.active === "report",
+              })}
+              onClick={() => {
+                setState({ ...state, active: "report" });
+              }}
+            >
+              Báo cáo Sự kiện
+            </li>
+          </Link>
         </ul>
       </div>
       <div className="container">
         {state.active === "report" ? (
-          <>
-            <div className="chart">
-              <div className="header">
-                <p className="title">Biểu đồ thống kê</p>
-                <div className="actions">
-                  <select className="event-name">
-                    <option>becod3r</option>
-                    <option>Chào mừng nhà giáo việt nam 20/11</option>
-                  </select>
-                </div>
-              </div>
-              <div className="body">
-                <ChartCustom />
-              </div>
-            </div>
-            <div className="players-list">
-              <div className="header">
-                <p className="title">Danh sách tham gia</p>
-                <div className="actions"></div>
-              </div>
-              <div className="body">
-                <GridDataCustom />
-              </div>
-            </div>
-          </>
+          <Report data={data} eventActive={eventActive} />
         ) : (
           <>
             <div className="my-event">
@@ -195,7 +171,7 @@ function HostFeature(props) {
                   <input
                     className="search"
                     placeholder="search"
-                    onChange={handleSearchOnChange}
+                    onKeyPress={handleSearchOnChange}
                   ></input>
                 </div>
               </div>

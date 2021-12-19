@@ -61,6 +61,7 @@ function EventStudio(props) {
               dayBegin: data.timeBegin.substring(0, 16),
               dayEnd: data.timeEnd.substring(0, 16),
               description: data.description,
+              fanpage: data.link,
             },
             file: {
               ...state.file,
@@ -89,9 +90,9 @@ function EventStudio(props) {
       name: state.data.name,
       description: state.data.description,
       standee: standee,
-      beginTime: state.data.dayBegin + ":00.000Z",
-      endTime: state.data.dayEnd + ":00.000Z",
-      fanpage: "https://www.facebook.com/gdsc.hcmute",
+      timeBegin: state.data.dayBegin + ":00.001Z",
+      timeEnd: state.data.dayEnd + ":00.001Z",
+      fanpage: state.data.fanpage,
       background: background,
     };
     console.log({ data });
@@ -113,7 +114,7 @@ function EventStudio(props) {
           setLoading(false);
           dispatch(
             snackBarActions.open({
-              message: "Có lỗi sảy ra :(",
+              message: "Có lỗi xảy ra :(",
               variant: "error",
             })
           );

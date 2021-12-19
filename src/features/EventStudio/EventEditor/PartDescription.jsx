@@ -95,7 +95,7 @@ function PartDescription(props) {
   };
 
   const INITIAL_FORM_STATE = {
-    participant: "HCMUTE",
+    fanpage: state.data.fanpage,
     dayBegin: state.data.dayBegin,
     dayEnd: state.data.dayEnd,
     link: state.data.link,
@@ -103,10 +103,8 @@ function PartDescription(props) {
   };
 
   const FORM_VALIDATION = yup.object().shape({
-    participant: yup.string().required(),
-    dayBegin: yup
-      .date()
-      .required(),
+    fanpage: yup.string(),
+    dayBegin: yup.date().required(),
     dayEnd: yup
       .date()
       .min(
@@ -123,6 +121,15 @@ function PartDescription(props) {
     initialValues: INITIAL_FORM_STATE,
     validationSchema: FORM_VALIDATION,
     onSubmit: (values) => {
+      setStateParent({
+        ...state,
+        data: {
+          ...state.data,
+          dayBegin: values.dayBegin,
+          dayEnd: values.dayEnd,
+          fanpage: values.fanpage,
+        },
+      });
       handleNextClick();
     },
   });
@@ -185,10 +192,9 @@ function PartDescription(props) {
             <Grid container className={classes.root} spacing={2}>
               <Grid item xs={12} className={classes.field}>
                 <FastField
-                  component={SelectField}
-                  name="participant"
-                  label="Đối tượng tham gia tham gia"
-                  options={[{ value: "HCMUTE", label: "Sinh viên HCMUTE" }]}
+                  component={InputField}
+                  type="text"
+                  name="fanpage"
                 />
               </Grid>
             </Grid>

@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { FacebookProvider, Page } from "react-facebook";
 import "./style.scss";
 import FroalaEditorView from "react-froala-wysiwyg/FroalaEditorView";
 
@@ -48,6 +49,18 @@ function EventViewDemo(props) {
               backgroundImage: `url(${state && state.file.standee.url})`,
             }}
           />
+          <FacebookProvider appId="1463441184039187">
+            <Page
+              width="456px"
+              height="709px"
+              href={
+                state.data.fanpage
+                  ? state.data.fanpage
+                  : "https://www.facebook.com/DoanHoiITUTE"
+              }
+              tabs="timeline"
+            />
+          </FacebookProvider>
         </div>
       </div>
     </div>
