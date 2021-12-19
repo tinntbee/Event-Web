@@ -75,7 +75,7 @@ function NavBar(props) {
             dispatch(
               snackBarActions.open({
                 message: "Bạn chưa đăng nhập đó ^^!",
-                variant: "error",
+                variant: "warning",
               })
             );
             dispatch(userAction.Logout());

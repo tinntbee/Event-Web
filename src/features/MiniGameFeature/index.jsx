@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import "./style.scss";
 import { FacebookProvider, Page } from "react-facebook";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Questions from "./Questions";
 import Answers from "./Answers";
 import Contents from "./Contents";
@@ -16,6 +16,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 MiniGameFeature.propTypes = {};
 
 function MiniGameFeature(props) {
+  const history = useHistory();
   const [data, setData] = useState({
     grid: { rows: 8, columns: 8 },
     listQA: [
@@ -122,38 +123,43 @@ function MiniGameFeature(props) {
     setLoading(true);
     const { _id } = props.match.params;
     const url = "/minigame/" + _id;
-    await axiosClient.get(url).then((res) => {
-      const listQA = [];
-      for (const qa of res.listQA) {
-        listQA.push({
-          questionContent: qa.questionContent,
-          questionImageUrl: qa.questionImageUrl,
-          aBegin: qa.aBegin,
-          aEnd: qa.aEnd,
-          answers: answerInitialization(res.gridColumn),
-        });
-      }
-      idEvent = res.idEvent;
-      setData({
-        _id: res._id,
-        idEvent: res.idEvent,
-        grid: { rows: res.gridRow, columns: res.gridColumn },
-        listQA: listQA,
-        columnKey: res.columnKey,
-        played: res.played,
-      });
-      setState({
-        ...{
+    await axiosClient
+      .get(url)
+      .then((res) => {
+        const listQA = [];
+        for (const qa of res.listQA) {
+          listQA.push({
+            questionContent: qa.questionContent,
+            questionImageUrl: qa.questionImageUrl,
+            aBegin: qa.aBegin,
+            aEnd: qa.aEnd,
+            answers: answerInitialization(res.gridColumn),
+          });
+        }
+        idEvent = res.idEvent;
+        setData({
           _id: res._id,
           idEvent: res.idEvent,
           grid: { rows: res.gridRow, columns: res.gridColumn },
           listQA: listQA,
-          played: res.played,
           columnKey: res.columnKey,
-        },
-        rowFocus: 0,
+          played: res.played,
+        });
+        setState({
+          ...{
+            _id: res._id,
+            idEvent: res.idEvent,
+            grid: { rows: res.gridRow, columns: res.gridColumn },
+            listQA: listQA,
+            played: res.played,
+            columnKey: res.columnKey,
+          },
+          rowFocus: 0,
+        });
+      })
+      .catch((error) => {
+        history.replace("/notfound");
       });
-    });
     setLoading(false);
   };
   const fetchDataEvent = async () => {

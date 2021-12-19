@@ -83,6 +83,7 @@ function EventFeature(props) {
         })
         .catch((e) => {
           console.log(e);
+          history.replace("/notfound");
         });
     }
   };

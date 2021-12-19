@@ -19,10 +19,12 @@ import {
 } from "./style";
 import { snackBarActions } from "../../redux/actions/snackBarActions";
 import { getKey } from "../../utils/miniGame";
+import { useHistory } from "react-router-dom";
 
 GameStudio.propTypes = {};
 
 function GameStudio(props) {
+  const history = useHistory();
   const { _id } = props.match.params;
   const loadingMiniGame = useSelector((state) => state.miniGame.loading);
   const [loading, setLoading] = useState(false);
@@ -57,14 +59,26 @@ function GameStudio(props) {
       key: getKey(state.listQA, state.columnKey),
     };
     const url = "/minigame/edit";
-    const res = await axiosClient.put(url, req);
-    setLoading(false);
-    dispatch(
-      snackBarActions.open({
-        message: "Lưu các thay đổi thành công",
-        variant: "success",
+    const res = await axiosClient
+      .put(url, req)
+      .then((res) => {
+        setLoading(false);
+        dispatch(
+          snackBarActions.open({
+            message: "Lưu các thay đổi thành công",
+            variant: "success",
+          })
+        );
       })
-    );
+      .catch((e) => {
+        setLoading(false);
+        dispatch(
+          snackBarActions.open({
+            message: "Có lỗi xảy ra :(",
+            variant: "error",
+          })
+        );
+      });
   };
   const fetchDataEvent = async () => {
     setLoading(true);

@@ -28,6 +28,7 @@ import Slide from "@mui/material/Slide";
 import { useDispatch, useSelector } from "react-redux";
 import { snackBarActions } from "./redux/actions/snackBarActions";
 import { dialogActions } from "./redux/actions/dialogActions";
+import NotFoundFeature from "./features/NotFoundFeature";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -84,6 +85,7 @@ function App() {
           <Route path="/memberlist" component={MemberListFeature} exact />
           <Route path="/minigamelist" component={MiniGameFeature} exact />
           <Route path="/host" component={HostFeature} exact />
+          <Route path="/notfound" component={NotFoundFeature} />
         </Switch>
       </div>
       <Snackbar

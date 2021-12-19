@@ -38,13 +38,17 @@ button {
 .Body {
   width: 100%;
   height: 100%;
-  padding: 10px 0;
+  /* padding: 10px 0; */
   background: var(--base-color-gray);
   overflow-x: hidden;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.Body > div {
+  margin: 10px 0;
 }
 
 a {
