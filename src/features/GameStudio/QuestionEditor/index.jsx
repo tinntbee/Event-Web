@@ -17,6 +17,7 @@ import {
 QuestionEditor.propTypes = {};
 
 function QuestionEditor(props) {
+  const { setLoading } = props;
   const _id = useSelector((state) => state.miniGame.miniGame._id);
   const rowFocus = useSelector((state) => state.miniGame.miniGame.rowFocus);
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ function QuestionEditor(props) {
     (state) => state.miniGame.miniGame.listQA[rowFocus]
   );
   const handleOnChange = (e) => {
+    setLoading(true);
     const acceptedImageTypes = ["image/gif", "image/jpeg", "image/png"];
     const pathname = `imageQuestions/${_id}/`;
     const filename = `${Date.now()}`;
@@ -44,6 +46,7 @@ function QuestionEditor(props) {
             .getDownloadURL()
             .then((url) => {
               dispatch(changeQuestionImageUrl(url));
+              setLoading(false);
             });
         }
       );

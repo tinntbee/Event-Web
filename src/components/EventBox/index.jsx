@@ -54,7 +54,7 @@ function EventBox(props) {
             >
               <div
                 className="avatar_host"
-                style={{ backgroundImage: `url(${data.host.avatar})` }}
+                style={{ backgroundImage: `url(${data.host?.avatar})` }}
               />
             </div>
           </div>
@@ -74,7 +74,7 @@ function EventBox(props) {
             <div className="detail">
               <p>
                 <span className="black">Host: </span>{" "}
-                {data.host.nickname ? data.host.nickname : data.host.fullName}
+                {data.host?.nickname ? data.host?.nickname : data.host?.fullName}
               </p>
               <p>
                 <span className="black">Status: </span>

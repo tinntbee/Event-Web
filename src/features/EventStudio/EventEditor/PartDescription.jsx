@@ -103,7 +103,7 @@ function PartDescription(props) {
   };
 
   const FORM_VALIDATION = yup.object().shape({
-    fanpage: yup.string(),
+    fanpage: yup.string().required(),
     dayBegin: yup.date().required(),
     dayEnd: yup
       .date()

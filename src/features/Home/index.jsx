@@ -87,19 +87,18 @@ function Home(props) {
         </div>
       </div>
       <div className="home__body">
-        {loading ? (
-          <div className="home__body__event-box">
-            <EventBoxLoading />
-          </div>
-        ) : (
-          data &&
+        {data &&
           data.map((item, index) => {
             return (
-              <div key={index} className="home__body__event-box">
+              <div key={item._id} className="home__body__event-box">
                 <EventBox data={item} />
               </div>
             );
-          })
+          })}
+        {loading && (
+          <div className="home__body__event-box">
+            <EventBoxLoading />
+          </div>
         )}
       </div>
       {data && data.length < home.limit && (

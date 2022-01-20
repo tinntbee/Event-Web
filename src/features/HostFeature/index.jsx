@@ -54,7 +54,7 @@ function HostFeature(props) {
         title: "Xác nhận xóa ?",
         content: "Xóa sự kiện này sẽ bao gồm minigame và các dự liệu kèm theo!",
         callbacks: [
-          { callback: undefined, content: "Hủy" },
+          { callback: () => {}, content: "Hủy" },
           { callback: acceptRemove, content: "Tiếp tục" },
         ],
       })

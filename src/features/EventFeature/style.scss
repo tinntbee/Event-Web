@@ -118,10 +118,12 @@
 
     & > .right {
       flex-grow: 1;
-      max-height: 920px;
-      text-align: center;
+      min-height: 920px;
+      align-items: center;
       overflow-x: hidden;
       overflow-y: auto;
+      display: flex;
+      flex-direction: column;
 
       &::-webkit-scrollbar {
         display: none;

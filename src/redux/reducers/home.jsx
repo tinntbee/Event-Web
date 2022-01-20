@@ -6,7 +6,7 @@ const initialState = {
   status: "-1",
   faculty: "all",
   page: 1,
-  size: 10,
+  size: 6,
   limit: 0,
 };
 

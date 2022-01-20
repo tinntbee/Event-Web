@@ -152,7 +152,7 @@ function GameStudio(props) {
       <Body>
         <QuestionControl listQA={state.listQA} questionActive={rowFocus} />
         <AnswersViewer listQA={state.listQA} grid={state.grid} />
-        <QuestionEditor />
+        <QuestionEditor setLoading={setLoading} />
       </Body>
     </Container>
   );

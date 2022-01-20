@@ -62,7 +62,7 @@ export const ImportFile = styled.div`
   width: 100%;
   height: 290px;
   padding: 20px;
-  background-image: url("icons/add-new-file.svg");
+  background-image: url("../../icons/add-new-file.svg");
   background-position: center;
   background-repeat: no-repeat;
   overflow: hidden;
